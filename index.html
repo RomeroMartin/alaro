@@ -271,10 +271,43 @@
   .form-msg.ok  { color: var(--verde); }
   .form-msg.err { color: var(--rojo); }
 
-  @media (max-width: 480px) {
-    .topbar-user { display: none; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .btn-cancelar-cadete {
+    height: 42px; background: none; border: 1px solid var(--gris2); color: var(--gris);
+    font-family: var(--fd); font-size: 15px; letter-spacing: 1px; padding: 0 16px;
+    cursor: pointer; transition: border-color .2s, color .2s; white-space: nowrap;
   }
+  .btn-cancelar-cadete:hover { border-color: var(--carbon); color: var(--carbon); }
+
+  /* Cadete cards */
+  .cadete-card {
+    background: var(--bg); border: 1px solid var(--gris3);
+    border-left: 3px solid var(--dorado);
+    padding: 12px 14px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .cadete-card.inactivo { border-left-color: var(--gris2); opacity: .55; }
+  .cadete-card-avatar {
+    width: 36px; height: 36px; background: var(--carbon); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 500; color: var(--dorado);
+  }
+  .cadete-card.inactivo .cadete-card-avatar { background: var(--gris3); color: var(--gris); }
+  .cadete-card-info { flex: 1; }
+  .cadete-card-name { font-size: 14px; font-weight: 400; color: var(--carbon); }
+  .cadete-card-meta { font-size: 11px; color: var(--gris); margin-top: 2px; letter-spacing: .5px; }
+  .cadete-card-badge {
+    font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 7px; font-weight: 500; margin-left: 8px;
+    background: rgba(176,58,46,.08); color: var(--rojo); border: 1px solid rgba(176,58,46,.25);
+  }
+  .cadete-card-actions { display: flex; gap: 6px; }
+  .btn-cad-action {
+    font-size: 10px; letter-spacing: .5px; text-transform: uppercase;
+    background: none; border: 1px solid var(--gris2); color: var(--gris);
+    padding: 4px 10px; cursor: pointer; transition: border-color .2s, color .2s; white-space: nowrap;
+  }
+  .btn-cad-action:hover { border-color: var(--dorado); color: var(--dorado2); }
+  .btn-cad-action.danger:hover { border-color: var(--rojo); color: var(--rojo); }
 </style>
 </head>
 <body>
@@ -360,6 +393,7 @@
       <button class="admin-tab active" data-tab="panel">Panel</button>
       <button class="admin-tab" data-tab="tareas">Tareas</button>
       <button class="admin-tab" data-tab="nueva">+ Nueva tarea</button>
+      <button class="admin-tab" data-tab="cadetes">Cadetes</button>
     </div>
 
     <!-- TAB PANEL -->
@@ -408,8 +442,38 @@
       <button class="btn-add" id="btn-nueva-tarea">AGREGAR TAREA</button>
       <div class="form-msg" id="form-msg"></div>
     </div>
-  </div>
-</div>
+
+    <!-- TAB CADETES -->
+    <div class="tab-panel" id="tab-cadetes">
+
+      <div class="section-label" style="margin-bottom:12px">Cadetes registrados</div>
+      <div id="cadetes-list-wrap" style="margin-bottom:2rem"></div>
+
+      <div id="cadete-form-wrap">
+        <div class="section-label" id="cadete-form-title" style="margin-bottom:12px">Nuevo cadete</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="input-label">Nombre completo</label>
+            <input class="form-field" type="text" id="cf-nombre" placeholder="Ej: Carlos Pérez">
+          </div>
+          <div class="form-group">
+            <label class="input-label">PIN (4 dígitos)</label>
+            <input class="form-field" type="tel" id="cf-pin" maxlength="4" inputmode="numeric" placeholder="Ej: 4321">
+          </div>
+          <div class="form-group" style="justify-content:flex-end">
+            <label class="input-label" style="visibility:hidden">—</label>
+            <div style="display:flex;gap:8px;align-items:flex-end">
+              <button class="btn-add" id="btn-guardar-cadete" style="padding:10px 20px;font-size:15px">GUARDAR</button>
+              <button class="btn-cancelar-cadete" id="btn-cancelar-cadete">CANCELAR</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-msg" id="cadete-form-msg"></div>
+      </div>
+    </div>
+
+  </div><!-- /admin-body -->
+</div><!-- /screen-admin -->
 
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbx4KuAAkwvTMYP2XCmZAopKtfADQYBOSf9vjWfyBszkhSoLIPK226ZUsmOD-hW4YAxJZg/exec';
@@ -575,6 +639,11 @@ async function doLogin() {
   }
   const cadete = appData.cadetes.find(c => String(c.pin) === pin);
   if (cadete) {
+    const inactivo = String(cadete.activo) === 'false' || String(cadete.activo) === '0';
+    if (inactivo) {
+      document.getElementById('login-error').textContent = 'Tu usuario está desactivado. Hablá con la administración.';
+      pinField.value = ''; pinField.focus(); return;
+    }
     currentUser = { tipo: 'cadete', cadete };
     pinField.value = '';
     initCadete(cadete);
@@ -686,6 +755,7 @@ function initAdmin() {
   poblarFiltrosYSelects();
   setupFiltros();
   setupNuevaTarea();
+  setupCadetes();
 }
 
 function renderPanel() {
@@ -711,9 +781,11 @@ function renderPanel() {
 }
 
 function poblarFiltrosYSelects() {
+  const activos = appData.cadetes.filter(c => String(c.activo) !== 'false' && String(c.activo) !== '0');
   const opts = appData.cadetes.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+  const optsActivos = activos.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
   document.getElementById('filter-cadete').innerHTML = '<option value="">Todos los cadetes</option>' + opts;
-  document.getElementById('nf-cadete').innerHTML     = '<option value="">Seleccioná...</option>' + opts;
+  document.getElementById('nf-cadete').innerHTML     = '<option value="">Seleccioná...</option>' + optsActivos;
   document.getElementById('filter-fecha').value = hoyISO();
   document.getElementById('nf-fecha').value     = hoyISO();
   aplicarFiltros();
@@ -822,6 +894,171 @@ function setupNuevaTarea() {
     }
     btn.disabled = false; btn.textContent = 'AGREGAR TAREA';
   });
+}
+
+// ════════════════════════════
+// GESTIÓN DE CADETES
+// ════════════════════════════
+let editandoCadeteId = null; // null = modo crear, número = modo editar
+
+function setupCadetes() {
+  renderCadetesList();
+  resetCadeteForm();
+
+  document.getElementById('btn-guardar-cadete').addEventListener('click', guardarCadete);
+  document.getElementById('btn-cancelar-cadete').addEventListener('click', () => {
+    editandoCadeteId = null;
+    resetCadeteForm();
+  });
+  document.getElementById('cf-pin').addEventListener('input', e => {
+    e.target.value = e.target.value.replace(/\D/g,'');
+  });
+}
+
+function renderCadetesList() {
+  const wrap = document.getElementById('cadetes-list-wrap');
+  if (!appData.cadetes.length) {
+    wrap.innerHTML = '<p style="color:var(--gris);font-size:13px;padding:.5rem 0">No hay cadetes registrados aún.</p>';
+    return;
+  }
+  wrap.innerHTML = appData.cadetes.map(c => {
+    const inactivo = String(c.activo) === 'false' || String(c.activo) === '0';
+    const badge    = inactivo ? '<span class="cadete-card-badge">Inactivo</span>' : '';
+    const btnToggle = inactivo
+      ? `<button class="btn-cad-action" onclick="toggleActivoCadete(${c.id})">Activar</button>`
+      : `<button class="btn-cad-action" onclick="toggleActivoCadete(${c.id})">Desactivar</button>`;
+    return `
+      <div class="cadete-card ${inactivo ? 'inactivo' : ''}" id="cadete-card-${c.id}">
+        <div class="cadete-card-avatar">${iniciales(c.nombre)}</div>
+        <div class="cadete-card-info">
+          <div class="cadete-card-name">${c.nombre}${badge}</div>
+          <div class="cadete-card-meta">PIN: ${c.pin} &nbsp;·&nbsp; ID: ${c.id}</div>
+        </div>
+        <div class="cadete-card-actions">
+          <button class="btn-cad-action" onclick="editarCadete(${c.id})">Editar</button>
+          ${btnToggle}
+          <button class="btn-cad-action danger" onclick="eliminarCadete(${c.id}, '${c.nombre.replace(/'/g,"\\'")}')">Eliminar</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function resetCadeteForm() {
+  editandoCadeteId = null;
+  document.getElementById('cf-nombre').value = '';
+  document.getElementById('cf-pin').value    = '';
+  document.getElementById('cadete-form-msg').textContent = '';
+  document.getElementById('cadete-form-msg').className   = 'form-msg';
+  document.getElementById('cadete-form-title').textContent = 'Nuevo cadete';
+  document.getElementById('btn-guardar-cadete').textContent = 'GUARDAR';
+  document.getElementById('btn-cancelar-cadete').style.display = 'none';
+}
+
+function editarCadete(id) {
+  const c = appData.cadetes.find(c => String(c.id) === String(id));
+  if (!c) return;
+  editandoCadeteId = id;
+  document.getElementById('cf-nombre').value = c.nombre;
+  document.getElementById('cf-pin').value    = c.pin;
+  document.getElementById('cadete-form-title').textContent   = `Editando: ${c.nombre}`;
+  document.getElementById('btn-guardar-cadete').textContent  = 'ACTUALIZAR';
+  document.getElementById('btn-cancelar-cadete').style.display = 'inline-block';
+  document.getElementById('cadete-form-msg').textContent = '';
+  // Scroll al formulario
+  document.getElementById('cadete-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('cf-nombre').focus();
+}
+
+async function guardarCadete() {
+  const nombre = document.getElementById('cf-nombre').value.trim();
+  const pin    = document.getElementById('cf-pin').value.trim();
+  const msg    = document.getElementById('cadete-form-msg');
+
+  if (!nombre) { msg.className = 'form-msg err'; msg.textContent = 'El nombre es obligatorio.'; return; }
+  if (pin.length !== 4) { msg.className = 'form-msg err'; msg.textContent = 'El PIN debe tener exactamente 4 dígitos.'; return; }
+
+  // Verificar PIN duplicado (distinto al que se está editando)
+  const pinUsado = appData.cadetes.find(c =>
+    String(c.pin) === pin && String(c.id) !== String(editandoCadeteId)
+  );
+  if (pinUsado) { msg.className = 'form-msg err'; msg.textContent = `El PIN ${pin} ya está en uso por ${pinUsado.nombre}.`; return; }
+
+  const btn = document.getElementById('btn-guardar-cadete');
+  btn.disabled = true; btn.textContent = '...';
+
+  if (editandoCadeteId) {
+    // ── EDITAR ──
+    try {
+      await postData({ hoja:'cadetes', accion:'editar_cadete', id: editandoCadeteId, nombre, pin });
+      const idx = appData.cadetes.findIndex(c => String(c.id) === String(editandoCadeteId));
+      if (idx !== -1) { appData.cadetes[idx].nombre = nombre; appData.cadetes[idx].pin = pin; }
+      showToast(`${nombre} actualizado ✓`);
+      renderCadetesList();
+      poblarFiltrosYSelects();
+      renderPanel();
+      resetCadeteForm();
+    } catch(e) {
+      msg.className = 'form-msg err'; msg.textContent = 'Error al guardar. Verificá la conexión.';
+    }
+  } else {
+    // ── CREAR ──
+    const ids  = appData.cadetes.map(c => parseInt(c.id)||0);
+    const newId = ids.length ? Math.max(...ids)+1 : 1;
+    const nuevo = { id: newId, nombre, pin, activo: true };
+    try {
+      await postData({ hoja:'cadetes', accion:'nuevo_cadete', ...nuevo });
+      appData.cadetes.push(nuevo);
+      showToast(`${nombre} creado ✓`);
+      renderCadetesList();
+      poblarFiltrosYSelects();
+      renderPanel();
+      resetCadeteForm();
+    } catch(e) {
+      msg.className = 'form-msg err'; msg.textContent = 'Error al guardar. Verificá la conexión.';
+    }
+  }
+  btn.disabled = false;
+  btn.textContent = editandoCadeteId ? 'ACTUALIZAR' : 'GUARDAR';
+}
+
+async function toggleActivoCadete(id) {
+  const c = appData.cadetes.find(c => String(c.id) === String(id));
+  if (!c) return;
+  const inactivo   = String(c.activo) === 'false' || String(c.activo) === '0';
+  const nuevoEstado = inactivo ? true : false;
+  const accionTxt  = nuevoEstado ? 'activar' : 'desactivar';
+  const ok = await showModal(
+    nuevoEstado ? 'Activar cadete' : 'Desactivar cadete',
+    `¿Querés <b>${accionTxt}</b> a este cadete? ${nuevoEstado ? 'Volverá a poder ingresar con su PIN.' : 'No podrá ingresar al sistema hasta que lo actives de nuevo.'}<div class="modal-task">${c.nombre}</div>`
+  );
+  if (!ok) return;
+  try {
+    await postData({ hoja:'cadetes', accion:'editar_cadete', id, nombre: c.nombre, pin: c.pin, activo: nuevoEstado });
+    c.activo = nuevoEstado;
+    renderCadetesList();
+    showToast(nuevoEstado ? `${c.nombre} activado ✓` : `${c.nombre} desactivado`);
+  } catch(e) {
+    showToast('Error al guardar. Verificá la conexión.', 3000);
+  }
+}
+
+async function eliminarCadete(id, nombre) {
+  const ok = await showModal(
+    'Eliminar cadete',
+    `¿Estás seguro? Esta acción no se puede deshacer. Se eliminará el cadete y no podrá ingresar más al sistema. Sus tareas asignadas no se borran.<div class="modal-task">${nombre}</div>`
+  );
+  if (!ok) return;
+  try {
+    await postData({ hoja:'cadetes', accion:'eliminar_cadete', id });
+    appData.cadetes = appData.cadetes.filter(c => String(c.id) !== String(id));
+    renderCadetesList();
+    poblarFiltrosYSelects();
+    renderPanel();
+    showToast(`${nombre} eliminado`);
+    if (String(editandoCadeteId) === String(id)) resetCadeteForm();
+  } catch(e) {
+    showToast('Error al eliminar. Verificá la conexión.', 3000);
+  }
 }
 
 // ── TABS ──
