@@ -515,12 +515,48 @@ function hoyISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-function dmyToISO(dmy) {
-  if (!dmy) return '';
-  const parts = String(dmy).split('/');
-  if (parts.length !== 3) return '';
-  const [d,m,y] = parts;
-  return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+function dmyToISO(raw) {
+  if (!raw) return '';
+  const s = String(raw).trim();
+
+  // Número serial de Excel/Sheets (ej: 46000)
+  if (/^\d{4,6}$/.test(s)) {
+    const excelEpoch = new Date(1899, 11, 30);
+    const d = new Date(excelEpoch.getTime() + parseInt(s) * 86400000);
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  // Ya en formato ISO: AAAA-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+
+  // Formato con barras: puede ser DD/MM/AAAA o MM/DD/AAAA
+  if (s.includes('/')) {
+    const parts = s.split('/');
+    if (parts.length === 3) {
+      const [a, b, c] = parts;
+      // Si el tercer bloque tiene 4 dígitos → es DD/MM/AAAA o MM/DD/AAAA
+      if (c.length === 4) {
+        const day   = parseInt(a);
+        const month = parseInt(b);
+        // Si el primer número > 12, es DD/MM/AAAA
+        if (day > 12) return `${c}-${b.padStart(2,'0')}-${a.padStart(2,'0')}`;
+        // Si el segundo número > 12, es MM/DD/AAAA
+        if (month > 12) return `${c}-${a.padStart(2,'0')}-${b.padStart(2,'0')}`;
+        // Ambiguos (ej 05/06) → asumimos DD/MM/AAAA (formato Argentina)
+        return `${c}-${b.padStart(2,'0')}-${a.padStart(2,'0')}`;
+      }
+      // Si el primero tiene 4 dígitos → AAAA/MM/DD
+      if (a.length === 4) return `${a}-${b.padStart(2,'0')}-${c.padStart(2,'0')}`;
+    }
+  }
+
+  // Intentar parseo nativo como último recurso
+  const parsed = new Date(s);
+  if (!isNaN(parsed)) {
+    return `${parsed.getFullYear()}-${String(parsed.getMonth()+1).padStart(2,'0')}-${String(parsed.getDate()).padStart(2,'0')}`;
+  }
+
+  return '';
 }
 function isoToDMY(iso) {
   if (!iso) return '';
