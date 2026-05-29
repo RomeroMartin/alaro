@@ -497,7 +497,7 @@
 </div><!-- /screen-admin -->
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbx4KuAAkwvTMYP2XCmZAopKtfADQYBOSf9vjWfyBszkhSoLIPK226ZUsmOD-hW4YAxJZg/exec';
+const API = 'https://script.google.com/macros/s/AKfycbw_sqQEd058N_47VVAAQ3AgBPkV5BumyKkQaA6yrqqX9DhCKbffxJfDfSkEHOuX4IvIhA/exec';
 
 // ── ESTADO ──
 let appData = { tareas: [], cadetes: [], config: [] };
@@ -611,6 +611,7 @@ document.getElementById('modal-overlay').addEventListener('click', e => {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
 }
 
 // ── API ──
@@ -1031,7 +1032,8 @@ async function guardarCadete() {
   if (editandoCadeteId) {
     // ── EDITAR ──
     try {
-      await postData({ hoja:'cadetes', accion:'editar_cadete', id: editandoCadeteId, nombre, pin });
+      const res = await postData({ hoja:'cadetes', accion:'editar_cadete', id: editandoCadeteId, nombre, pin });
+      if (!res || !res.ok) throw new Error('respuesta inválida');
       const idx = appData.cadetes.findIndex(c => String(c.id) === String(editandoCadeteId));
       if (idx !== -1) { appData.cadetes[idx].nombre = nombre; appData.cadetes[idx].pin = pin; }
       showToast(`${nombre} actualizado ✓`);
@@ -1040,15 +1042,16 @@ async function guardarCadete() {
       renderPanel();
       resetCadeteForm();
     } catch(e) {
-      msg.className = 'form-msg err'; msg.textContent = 'Error al guardar. Verificá la conexión.';
+      msg.className = 'form-msg err'; msg.textContent = 'Error al guardar. Verificá la conexión o el Apps Script.';
     }
   } else {
     // ── CREAR ──
     const ids  = appData.cadetes.map(c => parseInt(c.id)||0);
     const newId = ids.length ? Math.max(...ids)+1 : 1;
-    const nuevo = { id: newId, nombre, pin, activo: true };
+    const nuevo = { id: newId, nombre, pin, activo: 'true' };
     try {
-      await postData({ hoja:'cadetes', accion:'nuevo_cadete', ...nuevo });
+      const res = await postData({ hoja:'cadetes', accion:'nuevo_cadete', ...nuevo });
+      if (!res || !res.ok) throw new Error('respuesta inválida');
       appData.cadetes.push(nuevo);
       showToast(`${nombre} creado ✓`);
       renderCadetesList();
@@ -1056,7 +1059,7 @@ async function guardarCadete() {
       renderPanel();
       resetCadeteForm();
     } catch(e) {
-      msg.className = 'form-msg err'; msg.textContent = 'Error al guardar. Verificá la conexión.';
+      msg.className = 'form-msg err'; msg.textContent = 'Error al guardar. Verificá la conexión o el Apps Script.';
     }
   }
   btn.disabled = false;
