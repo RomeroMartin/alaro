@@ -197,15 +197,6 @@
   /* ADMIN VIEW */
   #screen-admin { background: var(--bg2); }
   .admin-body { padding: 1.25rem; flex: 1; }
-  .admin-tabs { display: flex; border-bottom: 1px solid var(--gris3); margin-bottom: 1.5rem; overflow-x: auto; background: var(--bg); }
-  .admin-tab {
-    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
-    padding: 12px 18px; cursor: pointer; color: var(--gris);
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-    background: none; border-top: none; border-left: none; border-right: none;
-    white-space: nowrap; transition: color .2s;
-  }
-  .admin-tab.active { color: var(--carbon); border-bottom-color: var(--dorado); }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
@@ -271,43 +262,74 @@
   .form-msg.ok  { color: var(--verde); }
   .form-msg.err { color: var(--rojo); }
 
+  /* ── ADMIN NAV DRAWER ── */
+  /* ── ADMIN TABS — flex wrap, 3 por fila en mobile ── */
+  .admin-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    background: var(--bg);
+    border-bottom: 2px solid var(--gris3);
+    margin-bottom: 1.5rem;
+  }
+  .admin-tab {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 12px 8px; cursor: pointer; color: var(--gris);
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+    background: none; border-top: none; border-left: none; border-right: none;
+    white-space: nowrap; transition: color .2s, border-color .2s;
+    text-align: center;
+  }
+  .admin-tab:hover { color: var(--carbon); }
+  .admin-tab.active { color: var(--carbon); border-bottom-color: var(--dorado); font-weight: 500; }
+
+  @media (max-width: 600px) {
+    .admin-tab { flex: 1 1 30%; padding: 11px 4px; font-size: 9px; letter-spacing: 1px; }
+  }
+
+  /* ── CADETE CARDS MOBILE-FIRST ── */
+  .cadete-card {
+    background: var(--bg); border: 1px solid var(--gris3);
+    border-left: 3px solid var(--dorado);
+    padding: 12px 14px; margin-bottom: 8px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .cadete-card.inactivo { border-left-color: var(--gris2); opacity: .65; }
+  .cadete-card-top { display: flex; align-items: center; gap: 12px; }
+  .cadete-card-avatar {
+    width: 38px; height: 38px; background: var(--carbon); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500; color: var(--dorado);
+  }
+  .cadete-card.inactivo .cadete-card-avatar { background: var(--gris3); color: var(--gris); }
+  .cadete-card-info { flex: 1; min-width: 0; }
+  .cadete-card-name { font-size: 14px; font-weight: 400; color: var(--carbon); line-height: 1.3; }
+  .cadete-card-meta { font-size: 11px; color: var(--gris); margin-top: 3px; letter-spacing: .5px; }
+  .cadete-card-badge {
+    display: inline-block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 6px; font-weight: 500; margin-left: 6px; vertical-align: middle;
+    background: rgba(176,58,46,.08); color: var(--rojo); border: 1px solid rgba(176,58,46,.25);
+  }
+  .cadete-card-actions {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    border-top: 1px solid var(--gris3); padding-top: 8px;
+  }
+  .btn-cad-action {
+    font-size: 10px; letter-spacing: .5px; text-transform: uppercase;
+    background: none; border: 1px solid var(--gris2); color: var(--gris);
+    padding: 6px 12px; cursor: pointer; transition: border-color .2s, color .2s;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .btn-cad-action:hover { border-color: var(--dorado); color: var(--dorado2); }
+  .btn-cad-action.danger:hover { border-color: var(--rojo); color: var(--rojo); }
+
   .btn-cancelar-cadete {
     height: 42px; background: none; border: 1px solid var(--gris2); color: var(--gris);
     font-family: var(--fd); font-size: 15px; letter-spacing: 1px; padding: 0 16px;
     cursor: pointer; transition: border-color .2s, color .2s; white-space: nowrap;
   }
   .btn-cancelar-cadete:hover { border-color: var(--carbon); color: var(--carbon); }
-
-  /* Cadete cards */
-  .cadete-card {
-    background: var(--bg); border: 1px solid var(--gris3);
-    border-left: 3px solid var(--dorado);
-    padding: 12px 14px; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .cadete-card.inactivo { border-left-color: var(--gris2); opacity: .55; }
-  .cadete-card-avatar {
-    width: 36px; height: 36px; background: var(--carbon); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 500; color: var(--dorado);
-  }
-  .cadete-card.inactivo .cadete-card-avatar { background: var(--gris3); color: var(--gris); }
-  .cadete-card-info { flex: 1; }
-  .cadete-card-name { font-size: 14px; font-weight: 400; color: var(--carbon); }
-  .cadete-card-meta { font-size: 11px; color: var(--gris); margin-top: 2px; letter-spacing: .5px; }
-  .cadete-card-badge {
-    font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
-    padding: 2px 7px; font-weight: 500; margin-left: 8px;
-    background: rgba(176,58,46,.08); color: var(--rojo); border: 1px solid rgba(176,58,46,.25);
-  }
-  .cadete-card-actions { display: flex; gap: 6px; }
-  .btn-cad-action {
-    font-size: 10px; letter-spacing: .5px; text-transform: uppercase;
-    background: none; border: 1px solid var(--gris2); color: var(--gris);
-    padding: 4px 10px; cursor: pointer; transition: border-color .2s, color .2s; white-space: nowrap;
-  }
-  .btn-cad-action:hover { border-color: var(--dorado); color: var(--dorado2); }
-  .btn-cad-action.danger:hover { border-color: var(--rojo); color: var(--rojo); }
 </style>
 </head>
 <body>
@@ -346,7 +368,6 @@
     <input class="pin-single" type="tel" id="pin-field" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="••••">
     <button class="btn-primary" id="btn-login">ENTRAR</button>
     <div class="login-error" id="login-error"></div>
-    <div class="login-note">Demo: cadete <span>1234</span> / <span>5678</span> — admin <span>9999</span></div>
   </div>
 </div>
 
@@ -483,27 +504,10 @@ let appData = { tareas: [], cadetes: [], config: [] };
 let currentUser = null;
 
 // ── DEMO DATA ──
-function ayer() {
-  const d = new Date(); d.setDate(d.getDate()-1);
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
-}
-function hoyDMY() {
-  const d = new Date();
-  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
-}
 const DEMO = {
-  cadetes: [
-    { id:1, nombre:'Miguel Fernández', pin:'1234' },
-    { id:2, nombre:'Lucas Ramírez',    pin:'5678' }
-  ],
+  cadetes: [],
   config: [{ clave:'admin_pin', valor:'9999' }],
-  tareas: [
-    { id:1, fecha:ayer(),    tarea:'Retirar facturas del depósito central',           direccion:'Av. 44 N°1230, La Plata',              cadete_id:1, estado:'pendiente', notas:'Preguntar por Carlos en portería' },
-    { id:2, fecha:hoyDMY(), tarea:'Buscar griferías en ferretería Sánchez',           direccion:'Calle 7 N°543, La Plata',              cadete_id:1, estado:'pendiente', notas:'' },
-    { id:3, fecha:hoyDMY(), tarea:'Entregar planos firmados en el estudio del arq.', direccion:'Calle 50 N°870, La Plata',              cadete_id:1, estado:'hecha',     notas:'' },
-    { id:4, fecha:hoyDMY(), tarea:'Gestionar permiso municipal — Edificio Sender',    direccion:'Municipalidad, calle 12 e/ 51 y 53',   cadete_id:2, estado:'hecha',     notas:'Llevar expediente N°4421' },
-    { id:5, fecha:hoyDMY(), tarea:'Pagar proveedor materiales — Sasso Construcciones',direccion:'13 N°420 e/ 44 y 45, La Plata',        cadete_id:2, estado:'pendiente', notas:'Llevar cheque N°0089' }
-  ]
+  tareas: []
 };
 
 // ── UTILS ──
@@ -922,22 +926,24 @@ function renderCadetesList() {
     return;
   }
   wrap.innerHTML = appData.cadetes.map(c => {
-    const inactivo = String(c.activo) === 'false' || String(c.activo) === '0';
-    const badge    = inactivo ? '<span class="cadete-card-badge">Inactivo</span>' : '';
+    const inactivo  = String(c.activo) === 'false' || String(c.activo) === '0';
+    const badge     = inactivo ? '<span class="cadete-card-badge">Inactivo</span>' : '';
     const btnToggle = inactivo
       ? `<button class="btn-cad-action" onclick="toggleActivoCadete(${c.id})">Activar</button>`
       : `<button class="btn-cad-action" onclick="toggleActivoCadete(${c.id})">Desactivar</button>`;
     return `
       <div class="cadete-card ${inactivo ? 'inactivo' : ''}" id="cadete-card-${c.id}">
-        <div class="cadete-card-avatar">${iniciales(c.nombre)}</div>
-        <div class="cadete-card-info">
-          <div class="cadete-card-name">${c.nombre}${badge}</div>
-          <div class="cadete-card-meta">PIN: ${c.pin} &nbsp;·&nbsp; ID: ${c.id}</div>
+        <div class="cadete-card-top">
+          <div class="cadete-card-avatar">${iniciales(c.nombre)}</div>
+          <div class="cadete-card-info">
+            <div class="cadete-card-name">${c.nombre}${badge}</div>
+            <div class="cadete-card-meta">PIN: ${c.pin}&nbsp;&nbsp;·&nbsp;&nbsp;ID: ${c.id}</div>
+          </div>
         </div>
         <div class="cadete-card-actions">
-          <button class="btn-cad-action" onclick="editarCadete(${c.id})">Editar</button>
+          <button class="btn-cad-action" onclick="editarCadete(${c.id})">✎ Editar</button>
           ${btnToggle}
-          <button class="btn-cad-action danger" onclick="eliminarCadete(${c.id}, '${c.nombre.replace(/'/g,"\\'")}')">Eliminar</button>
+          <button class="btn-cad-action danger" onclick="eliminarCadete(${c.id}, '${c.nombre.replace(/'/g,"\\'")}')">✕ Eliminar</button>
         </div>
       </div>`;
   }).join('');
@@ -1067,7 +1073,7 @@ document.querySelectorAll('.admin-tab').forEach(tab =>
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
-    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
   })
 );
 
