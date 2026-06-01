@@ -201,7 +201,10 @@
   .btn-cancelar { height: 42px; background: none; border: 1px solid var(--gris2); color: var(--gris); font-family: var(--fd); font-size: 15px; letter-spacing: 1px; padding: 0 16px; cursor: pointer; transition: border-color .2s, color .2s; }
   .btn-cancelar:hover { border-color: var(--carbon); color: var(--carbon); }
 
-  @media (max-width: 480px) { .topbar-user { display: none; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  .mrs-footer { text-align: center; padding: 1.5rem 1rem; border-top: 1px solid var(--gris3); margin-top: auto; }
+  .mrs-footer a { font-size: 11px; color: var(--gris2); text-decoration: none; letter-spacing: 1px; transition: color .2s; }
+  .mrs-footer a:hover { color: var(--dorado); }
+  .mrs-footer a span { color: var(--dorado); font-weight: 500; }
 </style>
 </head>
 <body>
@@ -235,6 +238,7 @@
     <button class="btn-primary" id="btn-login">ENTRAR</button>
     <div class="login-error" id="login-error"></div>
   </div>
+  <footer class="mrs-footer"><a href="https://www.martinromero.com.ar" target="_blank">Desarrollado por <span>Martin Romero Studio</span></a></footer>
 </div>
 
 <!-- CADETE -->
@@ -274,6 +278,7 @@
     <div class="section-label" id="cadete-hoy-label">Tareas del día</div>
     <div id="cadete-tareas-list"></div>
     <div id="cadete-empty" class="empty-state" style="display:none">No hay tareas asignadas para este día.</div>
+    <footer class="mrs-footer"><a href="https://www.martinromero.com.ar" target="_blank">Desarrollado por <span>Martin Romero Studio</span></a></footer>
   </div>
 </div>
 
@@ -378,6 +383,7 @@
     </div>
 
   </div>
+  <footer class="mrs-footer"><a href="https://www.martinromero.com.ar" target="_blank">Desarrollado por <span>Martin Romero Studio</span></a></footer>
 </div>
 
 <script>
@@ -639,7 +645,8 @@ function taskCardHTML(t, esVencida) {
   const tag    = esVencida && !hecha
     ? `<span class="task-tag tag-vencida">Vencida — ${isoToDMY(dmyToISO(t.fecha))}</span>`
     : hecha ? `<span class="task-tag tag-hecha">Hecha</span>` : '';
-  const asigPor = t.asignado_por ? `<div class="task-asignado">✦ Asignó: ${t.asignado_por}</div>` : '';
+  const ap = t.asignado_por ? String(t.asignado_por).trim() : '';
+  const asigPor = ap ? `<div class="task-asignado">✦ Asignado por: <strong>${ap}</strong></div>` : '';
   return `
     <div class="task-card ${estado}" data-id="${t.id}" data-estado="${t.estado}" data-tarea="${t.tarea.replace(/"/g,'&quot;')}">
       <div class="task-check"><span class="check-icon">✓</span></div>
