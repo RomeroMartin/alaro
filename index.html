@@ -117,7 +117,7 @@
   .task-card.hecha .task-name { text-decoration: line-through; color: var(--gris); }
   .task-addr { font-size: 12px; color: var(--gris); margin-bottom: 3px; }
   .task-notas { font-size: 11px; color: var(--gris2); font-style: italic; margin-bottom: 3px; }
-  .task-asignado { font-size: 10px; color: var(--dorado2); letter-spacing: .5px; }
+  .task-asignado { font-size: 11px; color: var(--dorado2); font-weight: 500; letter-spacing: .3px; margin-top: 2px; }
   .task-tag { display: inline-block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; margin-top: 4px; font-weight: 500; }
   .tag-vencida { background: rgba(176,58,46,.08); color: var(--rojo); border: 1px solid rgba(176,58,46,.25); }
   .tag-hecha   { background: rgba(45,122,79,.08); color: var(--verde); border: 1px solid rgba(45,122,79,.25); }
@@ -351,13 +351,23 @@
       <div class="section-label" style="margin-bottom:12px">Usuarios registrados</div>
       <div id="usuarios-list-wrap" style="margin-bottom:2rem"></div>
       <div id="usuario-form-wrap">
-        <div class="section-label" id="usuario-form-title" style="margin-bottom:12px">Nuevo cadete</div>
+        <div class="section-label" id="usuario-form-title" style="margin-bottom:12px">Nuevo usuario</div>
         <div class="form-grid">
           <div class="form-group full"><label class="input-label">Nombre completo</label><input class="form-field" type="text" id="cf-nombre" placeholder="Ej: Carlos Pérez"></div>
           <div class="form-group"><label class="input-label">PIN (4 dígitos)</label><input class="form-field" type="tel" id="cf-pin" maxlength="4" inputmode="numeric" placeholder="Ej: 4321"></div>
-          <div class="form-group" style="justify-content:flex-end">
-            <label class="input-label" style="visibility:hidden">—</label>
-            <div style="display:flex;gap:8px;align-items:flex-end">
+          <div class="form-group">
+            <label class="input-label">Rol</label>
+            <select class="form-field" id="cf-rol">
+              <option value="cadete">Cadete</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+          <div class="form-group" id="cf-inicial-wrap" style="display:none">
+            <label class="input-label">Inicial (1 letra)</label>
+            <input class="form-field" type="text" id="cf-inicial" maxlength="1" placeholder="Ej: A" style="text-transform:uppercase">
+          </div>
+          <div class="form-group full" style="justify-content:flex-start">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
               <button class="btn-add" id="btn-guardar-usuario" style="padding:10px 20px;font-size:15px">GUARDAR</button>
               <button class="btn-cancelar" id="btn-cancelar-usuario" style="display:none">CANCELAR</button>
             </div>
@@ -371,7 +381,7 @@
 </div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbxwlCH4cRc1s-_GPBiIUaUlZ_OlZoTUauWQL4GMjTgRQ7nRQeo0ZiPiXR1xZhZJ57Khdg/exec';
+const API = 'https://script.google.com/macros/s/AKfycbwgSLHhgFD-chp7zIpVCPEZF1CkWAyD8Wo5ayIETv9zdhTsSWB89g_kYj9R3PJxJpQ2yA/exec';
 
 let appData    = { tareas: [], usuarios: [] };
 let currentUser = null;
@@ -629,7 +639,7 @@ function taskCardHTML(t, esVencida) {
   const tag    = esVencida && !hecha
     ? `<span class="task-tag tag-vencida">Vencida — ${isoToDMY(dmyToISO(t.fecha))}</span>`
     : hecha ? `<span class="task-tag tag-hecha">Hecha</span>` : '';
-  const asigPor = t.asignado_por ? `<div class="task-asignado">Asignada por: ${t.asignado_por}</div>` : '';
+  const asigPor = t.asignado_por ? `<div class="task-asignado">✦ Asignó: ${t.asignado_por}</div>` : '';
   return `
     <div class="task-card ${estado}" data-id="${t.id}" data-estado="${t.estado}" data-tarea="${t.tarea.replace(/"/g,'&quot;')}">
       <div class="task-check"><span class="check-icon">✓</span></div>
@@ -865,42 +875,85 @@ function setupUsuarios() {
   document.getElementById('btn-guardar-usuario').addEventListener('click', guardarUsuario);
   document.getElementById('btn-cancelar-usuario').addEventListener('click', ()=>{ editandoUsuarioId=null; resetUsuarioForm(); });
   document.getElementById('cf-pin').addEventListener('input', e=>{ e.target.value=e.target.value.replace(/\D/g,''); });
+  document.getElementById('cf-inicial').addEventListener('input', e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,''); });
+  document.getElementById('cf-rol').addEventListener('change', ()=>{
+    const esAdmin = document.getElementById('cf-rol').value==='admin';
+    document.getElementById('cf-inicial-wrap').style.display = esAdmin ? 'flex' : 'none';
+  });
 }
 
 function renderUsuariosList() {
-  const wrap=document.getElementById('usuarios-list-wrap');
-  const cadetes=getCadetes();
-  if (!cadetes.length) { wrap.innerHTML='<p style="color:var(--gris);font-size:13px;padding:.5rem 0">No hay cadetes registrados.</p>'; return; }
-  wrap.innerHTML=cadetes.map(c=>{
-    const inactivo=String(c.activo)==='false'||String(c.activo)==='0';
-    const badge=inactivo?'<span class="cadete-card-badge">Inactivo</span>':'';
-    const btnToggle=inactivo
-      ?`<button class="btn-cad-action" onclick="toggleActivoUsuario(${c.id})">Activar</button>`
-      :`<button class="btn-cad-action" onclick="toggleActivoUsuario(${c.id})">Desactivar</button>`;
-    return `<div class="cadete-card ${inactivo?'inactivo':''}" id="usuario-card-${c.id}">
-      <div class="cadete-card-top">
-        <div class="cadete-card-avatar">${iniciales(c.nombre)}</div>
-        <div class="cadete-card-info">
-          <div class="cadete-card-name">${c.nombre}${badge}</div>
-          <div class="cadete-card-meta">PIN: ${c.pin}&nbsp;·&nbsp;ID: ${c.id}</div>
+  const wrap    = document.getElementById('usuarios-list-wrap');
+  const cadetes = getCadetes();
+  const admins  = getAdmins();
+
+  let html = '';
+
+  if (admins.length) {
+    html += `<div class="section-label" style="margin-bottom:10px;color:var(--dorado2)">Administradores</div>`;
+    html += admins.map(c => {
+      const inactivo = String(c.activo)==='false'||String(c.activo)==='0';
+      const badge    = inactivo ? '<span class="cadete-card-badge">Inactivo</span>' : '';
+      const btnToggle = inactivo
+        ? `<button class="btn-cad-action" onclick="toggleActivoUsuario(${c.id})">Activar</button>`
+        : `<button class="btn-cad-action" onclick="toggleActivoUsuario(${c.id})">Desactivar</button>`;
+      return `<div class="cadete-card ${inactivo?'inactivo':''}" style="border-left-color:var(--dorado)" id="usuario-card-${c.id}">
+        <div class="cadete-card-top">
+          <div class="cadete-card-avatar" style="background:var(--dorado);color:var(--carbon);font-size:16px;font-weight:700">${c.inicial||'?'}</div>
+          <div class="cadete-card-info">
+            <div class="cadete-card-name">${c.nombre}${badge}</div>
+            <div class="cadete-card-meta">PIN: ${c.pin}&nbsp;·&nbsp;Inicial: ${c.inicial||'—'}&nbsp;·&nbsp;ID: ${c.id}</div>
+          </div>
         </div>
-      </div>
-      <div class="cadete-card-actions">
-        <button class="btn-cad-action" onclick="editarUsuario(${c.id})">✎ Editar</button>
-        ${btnToggle}
-        <button class="btn-cad-action danger" onclick="eliminarUsuario(${c.id},'${c.nombre.replace(/'/g,"\\'")}')">✕ Eliminar</button>
-      </div>
-    </div>`;
-  }).join('');
+        <div class="cadete-card-actions">
+          <button class="btn-cad-action" onclick="editarUsuario(${c.id})">✎ Editar</button>
+          ${btnToggle}
+          <button class="btn-cad-action danger" onclick="eliminarUsuario(${c.id},'${c.nombre.replace(/'/g,"\\'")}')">✕ Eliminar</button>
+        </div>
+      </div>`;
+    }).join('');
+    html += `<div style="margin-bottom:1.5rem"></div>`;
+  }
+
+  html += `<div class="section-label" style="margin-bottom:10px">Cadetes</div>`;
+  if (!cadetes.length) {
+    html += '<p style="color:var(--gris);font-size:13px;padding:.5rem 0">No hay cadetes registrados.</p>';
+  } else {
+    html += cadetes.map(c=>{
+      const inactivo=String(c.activo)==='false'||String(c.activo)==='0';
+      const badge=inactivo?'<span class="cadete-card-badge">Inactivo</span>':'';
+      const btnToggle=inactivo
+        ?`<button class="btn-cad-action" onclick="toggleActivoUsuario(${c.id})">Activar</button>`
+        :`<button class="btn-cad-action" onclick="toggleActivoUsuario(${c.id})">Desactivar</button>`;
+      return `<div class="cadete-card ${inactivo?'inactivo':''}" id="usuario-card-${c.id}">
+        <div class="cadete-card-top">
+          <div class="cadete-card-avatar">${iniciales(c.nombre)}</div>
+          <div class="cadete-card-info">
+            <div class="cadete-card-name">${c.nombre}${badge}</div>
+            <div class="cadete-card-meta">PIN: ${c.pin}&nbsp;·&nbsp;ID: ${c.id}</div>
+          </div>
+        </div>
+        <div class="cadete-card-actions">
+          <button class="btn-cad-action" onclick="editarUsuario(${c.id})">✎ Editar</button>
+          ${btnToggle}
+          <button class="btn-cad-action danger" onclick="eliminarUsuario(${c.id},'${c.nombre.replace(/'/g,"\\'")}')">✕ Eliminar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  wrap.innerHTML = html;
 }
 
 function resetUsuarioForm() {
   editandoUsuarioId=null;
   document.getElementById('cf-nombre').value='';
   document.getElementById('cf-pin').value='';
+  document.getElementById('cf-rol').value='cadete';
+  document.getElementById('cf-inicial').value='';
+  document.getElementById('cf-inicial-wrap').style.display='none';
   document.getElementById('usuario-form-msg').textContent='';
   document.getElementById('usuario-form-msg').className='form-msg';
-  document.getElementById('usuario-form-title').textContent='Nuevo cadete';
+  document.getElementById('usuario-form-title').textContent='Nuevo usuario';
   document.getElementById('btn-guardar-usuario').textContent='GUARDAR';
   document.getElementById('btn-cancelar-usuario').style.display='none';
 }
@@ -911,6 +964,10 @@ function editarUsuario(id) {
   editandoUsuarioId=id;
   document.getElementById('cf-nombre').value=c.nombre;
   document.getElementById('cf-pin').value=c.pin;
+  document.getElementById('cf-rol').value=c.rol||'cadete';
+  document.getElementById('cf-inicial').value=c.inicial||'';
+  const esAdmin=(c.rol||'cadete')==='admin';
+  document.getElementById('cf-inicial-wrap').style.display=esAdmin?'flex':'none';
   document.getElementById('usuario-form-title').textContent=`Editando: ${c.nombre}`;
   document.getElementById('btn-guardar-usuario').textContent='ACTUALIZAR';
   document.getElementById('btn-cancelar-usuario').style.display='inline-block';
@@ -920,11 +977,16 @@ function editarUsuario(id) {
 }
 
 async function guardarUsuario() {
-  const nombre=document.getElementById('cf-nombre').value.trim();
-  const pin=document.getElementById('cf-pin').value.trim();
-  const msg=document.getElementById('usuario-form-msg');
+  const nombre  = document.getElementById('cf-nombre').value.trim();
+  const pin     = document.getElementById('cf-pin').value.trim();
+  const rol     = document.getElementById('cf-rol').value;
+  const inicial = document.getElementById('cf-inicial').value.trim().toUpperCase();
+  const msg     = document.getElementById('usuario-form-msg');
+
   if (!nombre) { msg.className='form-msg err'; msg.textContent='El nombre es obligatorio.'; return; }
   if (pin.length!==4) { msg.className='form-msg err'; msg.textContent='El PIN debe tener 4 dígitos.'; return; }
+  if (rol==='admin' && !inicial) { msg.className='form-msg err'; msg.textContent='El administrador necesita una inicial.'; return; }
+
   const pinUsado=appData.usuarios.find(u=>String(u.pin)===pin&&String(u.id)!==String(editandoUsuarioId));
   if (pinUsado) { msg.className='form-msg err'; msg.textContent=`El PIN ${pin} ya está en uso.`; return; }
 
@@ -933,17 +995,17 @@ async function guardarUsuario() {
 
   if (editandoUsuarioId) {
     try {
-      const res=await postData({hoja:'usuarios',accion:'editar_usuario',id:editandoUsuarioId,nombre,pin});
+      const res=await postData({hoja:'usuarios',accion:'editar_usuario',id:editandoUsuarioId,nombre,pin,rol,inicial});
       if (!res||!res.ok) throw new Error();
       const idx=appData.usuarios.findIndex(u=>String(u.id)===String(editandoUsuarioId));
-      if (idx!==-1) { appData.usuarios[idx].nombre=nombre; appData.usuarios[idx].pin=pin; }
+      if (idx!==-1) Object.assign(appData.usuarios[idx],{nombre,pin,rol,inicial});
       showToast(`${nombre} actualizado ✓`);
       renderUsuariosList(); poblarFiltrosYSelects(); renderPanel(); resetUsuarioForm();
     } catch(e) { msg.className='form-msg err'; msg.textContent='Error al guardar.'; }
   } else {
     const ids=appData.usuarios.map(u=>parseInt(u.id)||0);
     const newId=ids.length?Math.max(...ids)+1:1;
-    const nuevo={id:newId,nombre,pin,activo:'true',rol:'cadete',inicial:''};
+    const nuevo={id:newId,nombre,pin,activo:'true',rol,inicial};
     try {
       const res=await postData({hoja:'usuarios',accion:'nuevo_usuario',...nuevo});
       if (!res||!res.ok) throw new Error();
