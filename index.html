@@ -25,159 +25,88 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--carbon); font-family: var(--fb); font-weight: 300; min-height: 100vh; overflow-x: hidden; }
 
-  /* SCREENS */
   .screen { display: none; min-height: 100vh; flex-direction: column; }
   .screen.active { display: flex; }
 
-  /* PAGE LOADER */
-  #page-loader {
-    position: fixed; inset: 0; background: var(--carbon);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 2000; flex-direction: column; gap: 16px;
-  }
+  /* LOADER */
+  #page-loader { position: fixed; inset: 0; background: var(--carbon); display: flex; align-items: center; justify-content: center; z-index: 2000; flex-direction: column; gap: 16px; }
   #page-loader.hidden { display: none; }
   .loader-logo { font-family: var(--fd); font-size: 48px; letter-spacing: 2px; color: #fff; }
   .loader-logo span { color: var(--dorado); }
   .loader-sub { font-size: 12px; color: #888; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
-
-  /* SPINNER */
   .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid #444; border-top-color: var(--dorado); border-radius: 50%; animation: rot .7s linear infinite; }
   @keyframes rot { to { transform: rotate(360deg); } }
 
   /* TOAST */
-  #toast {
-    position: fixed; bottom: 1.5rem; left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--carbon); border: 1px solid var(--carbon2); border-left: 3px solid var(--dorado);
-    padding: 11px 20px; font-size: 13px; color: #fff;
-    z-index: 3000; transition: transform .3s ease; white-space: nowrap; pointer-events: none;
-  }
+  #toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--carbon); border: 1px solid var(--carbon2); border-left: 3px solid var(--dorado); padding: 11px 20px; font-size: 13px; color: #fff; z-index: 3000; transition: transform .3s ease; white-space: nowrap; pointer-events: none; }
   #toast.show { transform: translateX(-50%) translateY(0); }
 
   /* MODAL */
-  #modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,.45);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 4000; padding: 1.5rem;
-  }
+  #modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 4000; padding: 1.5rem; }
   #modal-overlay.hidden { display: none; }
-  .modal-box {
-    background: var(--bg); border: 1px solid var(--gris3);
-    border-top: 3px solid var(--dorado);
-    padding: 2rem; width: 100%; max-width: 380px;
-    box-shadow: 0 8px 32px rgba(0,0,0,.12);
-  }
+  .modal-box { background: var(--bg); border: 1px solid var(--gris3); border-top: 3px solid var(--dorado); padding: 2rem; width: 100%; max-width: 380px; box-shadow: 0 8px 32px rgba(0,0,0,.12); }
   .modal-title { font-family: var(--fd); font-size: 22px; letter-spacing: 1px; margin-bottom: .5rem; color: var(--carbon); }
   .modal-body { font-size: 13px; color: var(--gris); line-height: 1.6; margin-bottom: 1.5rem; }
   .modal-task { color: var(--carbon); font-size: 14px; margin: .75rem 0 0; font-weight: 400; }
   .modal-btns { display: flex; gap: 10px; }
-  .btn-confirm {
-    flex: 1; height: 46px; background: var(--carbon); color: #fff;
-    border: none; font-family: var(--fd); font-size: 18px; letter-spacing: 1px;
-    cursor: pointer; transition: background .2s;
-  }
+  .btn-confirm { flex: 1; height: 46px; background: var(--carbon); color: #fff; border: none; font-family: var(--fd); font-size: 18px; letter-spacing: 1px; cursor: pointer; transition: background .2s; }
   .btn-confirm:hover { background: var(--carbon2); }
-  .btn-cancel {
-    flex: 1; height: 46px; background: none; color: var(--gris);
-    border: 1px solid var(--gris2); font-family: var(--fd); font-size: 18px; letter-spacing: 1px;
-    cursor: pointer; transition: border-color .2s, color .2s;
-  }
+  .btn-cancel { flex: 1; height: 46px; background: none; color: var(--gris); border: 1px solid var(--gris2); font-family: var(--fd); font-size: 18px; letter-spacing: 1px; cursor: pointer; transition: border-color .2s, color .2s; }
   .btn-cancel:hover { border-color: var(--carbon); color: var(--carbon); }
 
   /* LOGIN */
   #screen-login { align-items: center; justify-content: center; padding: 2rem; position: relative; background: var(--bg2); }
-  .login-bg {
-    position: fixed; inset: 0; pointer-events: none; opacity: .5;
-    background:
-      repeating-linear-gradient(0deg,   transparent, transparent 39px, var(--gris3) 39px, var(--gris3) 40px),
-      repeating-linear-gradient(90deg,  transparent, transparent 39px, var(--gris3) 39px, var(--gris3) 40px);
-  }
-  .login-card {
-    position: relative; z-index: 1;
-    width: 100%; max-width: 340px;
-    background: var(--bg); border: 1px solid var(--gris3); border-top: 3px solid var(--dorado);
-    padding: 2.5rem 2rem;
-    box-shadow: 0 4px 24px rgba(0,0,0,.08);
-  }
+  .login-bg { position: fixed; inset: 0; pointer-events: none; opacity: .5; background: repeating-linear-gradient(0deg, transparent, transparent 39px, var(--gris3) 39px, var(--gris3) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, var(--gris3) 39px, var(--gris3) 40px); }
+  .login-card { position: relative; z-index: 1; width: 100%; max-width: 340px; background: var(--bg); border: 1px solid var(--gris3); border-top: 3px solid var(--dorado); padding: 2.5rem 2rem; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
   .brand { display: flex; align-items: flex-end; gap: 10px; margin-bottom: 1.75rem; }
   .brand-name { font-family: var(--fd); font-size: 44px; line-height: 1; color: var(--carbon); }
   .brand-dot { width: 8px; height: 8px; background: var(--dorado); border-radius: 50%; margin-bottom: 8px; }
   .brand-sub { font-size: 11px; color: var(--gris); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.75rem; border-left: 2px solid var(--dorado); padding-left: 10px; }
   .input-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gris); margin-bottom: 8px; display: block; }
-  .pin-single {
-    width: 100%; height: 58px; background: var(--bg2);
-    border: 1px solid var(--gris2); border-bottom: 2px solid var(--gris2);
-    color: var(--carbon); font-family: var(--fd); font-size: 34px;
-    text-align: center; letter-spacing: 10px; outline: none;
-    transition: border-color .2s; -webkit-text-security: disc;
-    caret-color: var(--dorado); margin-bottom: 1.25rem; padding: 0 1rem;
-    display: block;
-  }
+  .pin-single { width: 100%; height: 58px; background: var(--bg2); border: 1px solid var(--gris2); border-bottom: 2px solid var(--gris2); color: var(--carbon); font-family: var(--fd); font-size: 34px; text-align: center; letter-spacing: 10px; outline: none; transition: border-color .2s; -webkit-text-security: disc; caret-color: var(--dorado); margin-bottom: 1.25rem; padding: 0 1rem; display: block; }
   .pin-single:focus { border-color: var(--dorado); border-bottom-color: var(--dorado); }
-  .btn-primary {
-    width: 100%; height: 50px; background: var(--carbon); color: #fff;
-    border: none; font-family: var(--fd); font-size: 20px; letter-spacing: 2px;
-    cursor: pointer; transition: background .2s;
-  }
+  .btn-primary { width: 100%; height: 50px; background: var(--carbon); color: #fff; border: none; font-family: var(--fd); font-size: 20px; letter-spacing: 2px; cursor: pointer; transition: background .2s; }
   .btn-primary:hover { background: var(--carbon2); }
   .login-error { color: var(--rojo); font-size: 12px; text-align: center; margin-top: .75rem; min-height: 18px; }
-  .login-note { font-size: 11px; color: var(--gris2); text-align: center; margin-top: 1.5rem; line-height: 1.5; }
-  .login-note span { color: var(--gris); }
 
   /* TOPBAR */
-  .topbar {
-    background: var(--carbon); border-bottom: 1px solid var(--carbon2);
-    padding: 0 1.25rem; height: 54px;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-shrink: 0; position: sticky; top: 0; z-index: 100;
-  }
+  .topbar { background: var(--carbon); border-bottom: 1px solid var(--carbon2); padding: 0 1.25rem; height: 54px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; position: sticky; top: 0; z-index: 100; }
   .topbar-brand { font-family: var(--fd); font-size: 26px; letter-spacing: 1px; color: #fff; display: flex; align-items: center; gap: 5px; }
   .topbar-brand .dot { color: var(--dorado); }
+  .topbar-badge { background: var(--dorado); color: var(--carbon); font-family: var(--fd); font-size: 18px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; letter-spacing: 0; }
   .topbar-user { font-size: 12px; color: #aaa; }
-  .btn-logout {
-    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
-    color: #aaa; background: none; border: 1px solid #444;
-    padding: 5px 12px; cursor: pointer; transition: border-color .2s, color .2s;
-  }
+  .btn-logout { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #aaa; background: none; border: 1px solid #444; padding: 5px 12px; cursor: pointer; transition: border-color .2s, color .2s; }
   .btn-logout:hover { border-color: var(--dorado); color: var(--dorado); }
 
   /* CADETE VIEW */
   #screen-cadete { background: var(--bg); }
   .cadete-body { padding: 1.25rem; flex: 1; max-width: 600px; margin: 0 auto; width: 100%; }
-  .date-header {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gris3);
-  }
-  .date-title { font-family: var(--fd); font-size: 30px; letter-spacing: 1px; color: var(--carbon); }
-  .date-sub { font-size: 11px; color: var(--gris); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
-  .progress-wrap { text-align: right; }
-  .progress-lbl { font-size: 10px; color: var(--gris); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
-  .progress-bar-bg { width: 100px; height: 3px; background: var(--gris3); }
-  .progress-bar-fill { height: 3px; background: var(--dorado); transition: width .5s ease; }
-  .progress-txt { font-size: 11px; color: var(--gris); margin-top: 4px; }
 
-  .section-label {
-    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--gris); margin-bottom: 10px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  /* NAV DÍAS */
+  .day-nav { display: flex; align-items: center; justify-content: space-between; background: var(--bg2); border: 1px solid var(--gris3); padding: 8px 12px; margin-bottom: 1.25rem; }
+  .day-nav-btn { background: none; border: 1px solid var(--gris2); color: var(--gris); font-size: 18px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color .2s, color .2s; flex-shrink: 0; }
+  .day-nav-btn:hover { border-color: var(--dorado); color: var(--dorado); }
+  .day-nav-btn:disabled { opacity: .3; cursor: default; }
+  .day-nav-center { text-align: center; flex: 1; }
+  .day-nav-fecha { font-family: var(--fd); font-size: 20px; color: var(--carbon); letter-spacing: 1px; line-height: 1; }
+  .day-nav-sub { font-size: 10px; color: var(--gris); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .btn-hoy { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; background: var(--dorado); color: var(--carbon); border: none; padding: 3px 8px; cursor: pointer; font-weight: 500; margin-top: 3px; display: inline-block; }
+
+  .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gris3); }
+  .progress-lbl { font-size: 10px; color: var(--gris); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+  .progress-bar-bg { flex: 1; height: 3px; background: var(--gris3); }
+  .progress-bar-fill { height: 3px; background: var(--dorado); transition: width .5s ease; }
+  .progress-txt { font-size: 11px; color: var(--gris); white-space: nowrap; }
+
+  .section-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gris); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gris3); }
 
-  .task-card {
-    background: var(--bg); border: 1px solid var(--gris3); border-left: 3px solid var(--gris3);
-    padding: .875rem 1rem .875rem 1.125rem; margin-bottom: 8px;
-    display: flex; align-items: flex-start; gap: 12px;
-    cursor: pointer; transition: background .15s, border-left-color .15s;
-    -webkit-tap-highlight-color: transparent; user-select: none;
-  }
+  .task-card { background: var(--bg); border: 1px solid var(--gris3); border-left: 3px solid var(--gris3); padding: .875rem 1rem .875rem 1.125rem; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background .15s; -webkit-tap-highlight-color: transparent; user-select: none; }
   .task-card:hover { background: var(--bg2); }
   .task-card.pendiente { border-left-color: var(--dorado); }
   .task-card.hecha     { border-left-color: var(--verde); opacity: .55; cursor: default; }
   .task-card.vencida   { border-left-color: var(--rojo); }
-  .task-check {
-    width: 20px; height: 20px; border: 2px solid var(--gris2); flex-shrink: 0; margin-top: 1px;
-    display: flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s;
-  }
+  .task-check { width: 20px; height: 20px; border: 2px solid var(--gris2); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s; }
   .task-card.hecha .task-check { background: var(--verde); border-color: var(--verde); }
   .task-card.vencida .task-check { border-color: var(--rojo); }
   .task-card.pendiente .task-check { border-color: var(--dorado); }
@@ -187,20 +116,26 @@
   .task-name { font-size: 14px; font-weight: 400; color: var(--carbon); line-height: 1.35; margin-bottom: 3px; }
   .task-card.hecha .task-name { text-decoration: line-through; color: var(--gris); }
   .task-addr { font-size: 12px; color: var(--gris); margin-bottom: 3px; }
-  .task-notas { font-size: 11px; color: var(--gris2); font-style: italic; }
+  .task-notas { font-size: 11px; color: var(--gris2); font-style: italic; margin-bottom: 3px; }
+  .task-asignado { font-size: 10px; color: var(--dorado2); letter-spacing: .5px; }
   .task-tag { display: inline-block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; margin-top: 4px; font-weight: 500; }
-  .tag-vencida { background: rgba(176,58,46,.08); color: var(--rojo);  border: 1px solid rgba(176,58,46,.25); }
+  .tag-vencida { background: rgba(176,58,46,.08); color: var(--rojo); border: 1px solid rgba(176,58,46,.25); }
   .tag-hecha   { background: rgba(45,122,79,.08); color: var(--verde); border: 1px solid rgba(45,122,79,.25); }
 
   .empty-state { text-align: center; padding: 3rem 1rem; color: var(--gris); font-size: 14px; }
 
-  /* ADMIN VIEW */
+  /* ADMIN TABS */
   #screen-admin { background: var(--bg2); }
   .admin-body { padding: 1.25rem; flex: 1; }
+  .admin-tabs { display: flex; flex-wrap: wrap; background: var(--bg); border-bottom: 2px solid var(--gris3); margin-bottom: 1.5rem; }
+  .admin-tab { flex: 1 1 auto; min-width: 0; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 12px 8px; cursor: pointer; color: var(--gris); border-bottom: 2px solid transparent; margin-bottom: -2px; background: none; border-top: none; border-left: none; border-right: none; white-space: nowrap; transition: color .2s; text-align: center; }
+  .admin-tab:hover { color: var(--carbon); }
+  .admin-tab.active { color: var(--carbon); border-bottom-color: var(--dorado); font-weight: 500; }
+  @media (max-width: 600px) { .admin-tab { flex: 1 1 30%; padding: 11px 4px; font-size: 9px; letter-spacing: 1px; } }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* Stats */
+  /* STATS */
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 2rem; }
   .stat-box { background: var(--bg); border: 1px solid var(--gris3); border-top: 2px solid var(--gris3); padding: 1rem; }
   .stat-box.red   { border-top-color: var(--rojo); }
@@ -216,138 +151,72 @@
   .cad-bar-fill { height: 3px; background: var(--dorado); transition: width .5s; }
   .cad-pct { font-size: 11px; color: var(--gris); min-width: 32px; text-align: right; }
 
-  /* Tabla */
+  /* TABLA */
   .tasks-filter { display: flex; gap: 10px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
-  .filter-input {
-    background: var(--bg); border: 1px solid var(--gris2); color: var(--carbon);
-    font-family: var(--fb); font-size: 13px; padding: 7px 10px; outline: none; transition: border-color .2s;
-  }
+  .filter-input { background: var(--bg); border: 1px solid var(--gris2); color: var(--carbon); font-family: var(--fb); font-size: 13px; padding: 7px 10px; outline: none; transition: border-color .2s; }
   .filter-input:focus { border-color: var(--dorado); }
   .admin-table-wrap { overflow-x: auto; }
-  .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; background: var(--bg); }
+  .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 680px; background: var(--bg); }
   .admin-table th { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gris); text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--gris3); font-weight: 400; background: var(--bg2); }
   .admin-table td { padding: 9px 10px; border-bottom: 1px solid var(--gris3); color: var(--carbon2); vertical-align: middle; }
   .admin-table tr:hover td { background: var(--bg2); }
-
   .pill { display: inline-block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; font-weight: 500; }
-  .pill-pend  { background: rgba(200,169,110,.1);  color: var(--dorado2); border: 1px solid rgba(200,169,110,.4); }
-  .pill-hecha { background: rgba(45,122,79,.08);   color: var(--verde);   border: 1px solid rgba(45,122,79,.3); }
-  .pill-venc  { background: rgba(176,58,46,.08);   color: var(--rojo);    border: 1px solid rgba(176,58,46,.25); }
-
-  .btn-estado {
-    font-size: 10px; letter-spacing: .5px; text-transform: uppercase;
-    background: none; border: 1px solid var(--gris2); color: var(--gris);
-    padding: 4px 10px; cursor: pointer; white-space: nowrap; transition: border-color .2s, color .2s;
-  }
+  .pill-pend  { background: rgba(200,169,110,.1); color: var(--dorado2); border: 1px solid rgba(200,169,110,.4); }
+  .pill-hecha { background: rgba(45,122,79,.08); color: var(--verde); border: 1px solid rgba(45,122,79,.3); }
+  .pill-venc  { background: rgba(176,58,46,.08); color: var(--rojo); border: 1px solid rgba(176,58,46,.25); }
+  .td-actions { display: flex; gap: 5px; flex-wrap: wrap; }
+  .btn-estado { font-size: 10px; letter-spacing: .5px; text-transform: uppercase; background: none; border: 1px solid var(--gris2); color: var(--gris); padding: 4px 10px; cursor: pointer; white-space: nowrap; transition: border-color .2s, color .2s; }
   .btn-estado:hover { border-color: var(--dorado); color: var(--dorado2); }
+  .btn-estado.edit:hover { border-color: var(--carbon); color: var(--carbon); }
+  .btn-estado.danger:hover { border-color: var(--rojo); color: var(--rojo); }
 
-  /* Form */
+  /* FORMS */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
   @media (max-width: 540px) { .form-grid { grid-template-columns: 1fr; } }
   .form-group { display: flex; flex-direction: column; gap: 6px; }
   .form-group.full { grid-column: 1 / -1; }
-  .form-field {
-    background: var(--bg); border: 1px solid var(--gris2); color: var(--carbon);
-    font-family: var(--fb); font-size: 13px; padding: 10px 12px; outline: none; transition: border-color .2s; width: 100%;
-  }
+  .form-field { background: var(--bg); border: 1px solid var(--gris2); color: var(--carbon); font-family: var(--fb); font-size: 13px; padding: 10px 12px; outline: none; transition: border-color .2s; width: 100%; }
   .form-field:focus { border-color: var(--dorado); }
-  .btn-add {
-    background: var(--carbon); color: #fff; border: none;
-    font-family: var(--fd); font-size: 18px; letter-spacing: 2px;
-    padding: 12px 28px; cursor: pointer; transition: background .2s;
-  }
+  .btn-add { background: var(--carbon); color: #fff; border: none; font-family: var(--fd); font-size: 18px; letter-spacing: 2px; padding: 12px 28px; cursor: pointer; transition: background .2s; }
   .btn-add:hover { background: var(--carbon2); }
   .btn-add:disabled { background: var(--gris2); cursor: not-allowed; }
   .form-msg { font-size: 12px; margin-top: 8px; min-height: 18px; }
   .form-msg.ok  { color: var(--verde); }
   .form-msg.err { color: var(--rojo); }
 
-  /* ── ADMIN NAV DRAWER ── */
-  /* ── ADMIN TABS — flex wrap, 3 por fila en mobile ── */
-  .admin-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    background: var(--bg);
-    border-bottom: 2px solid var(--gris3);
-    margin-bottom: 1.5rem;
-  }
-  .admin-tab {
-    flex: 1 1 auto;
-    min-width: 0;
-    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
-    padding: 12px 8px; cursor: pointer; color: var(--gris);
-    border-bottom: 2px solid transparent; margin-bottom: -2px;
-    background: none; border-top: none; border-left: none; border-right: none;
-    white-space: nowrap; transition: color .2s, border-color .2s;
-    text-align: center;
-  }
-  .admin-tab:hover { color: var(--carbon); }
-  .admin-tab.active { color: var(--carbon); border-bottom-color: var(--dorado); font-weight: 500; }
-
-  @media (max-width: 600px) {
-    .admin-tab { flex: 1 1 30%; padding: 11px 4px; font-size: 9px; letter-spacing: 1px; }
-  }
-
-  /* ── CADETE CARDS MOBILE-FIRST ── */
-  .cadete-card {
-    background: var(--bg); border: 1px solid var(--gris3);
-    border-left: 3px solid var(--dorado);
-    padding: 12px 14px; margin-bottom: 8px;
-    display: flex; flex-direction: column; gap: 10px;
-  }
+  /* CADETE CARDS */
+  .cadete-card { background: var(--bg); border: 1px solid var(--gris3); border-left: 3px solid var(--dorado); padding: 12px 14px; margin-bottom: 8px; display: flex; flex-direction: column; gap: 10px; }
   .cadete-card.inactivo { border-left-color: var(--gris2); opacity: .65; }
   .cadete-card-top { display: flex; align-items: center; gap: 12px; }
-  .cadete-card-avatar {
-    width: 38px; height: 38px; background: var(--carbon); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 500; color: var(--dorado);
-  }
+  .cadete-card-avatar { width: 38px; height: 38px; background: var(--carbon); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--dorado); }
   .cadete-card.inactivo .cadete-card-avatar { background: var(--gris3); color: var(--gris); }
   .cadete-card-info { flex: 1; min-width: 0; }
   .cadete-card-name { font-size: 14px; font-weight: 400; color: var(--carbon); line-height: 1.3; }
   .cadete-card-meta { font-size: 11px; color: var(--gris); margin-top: 3px; letter-spacing: .5px; }
-  .cadete-card-badge {
-    display: inline-block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
-    padding: 2px 6px; font-weight: 500; margin-left: 6px; vertical-align: middle;
-    background: rgba(176,58,46,.08); color: var(--rojo); border: 1px solid rgba(176,58,46,.25);
-  }
-  .cadete-card-actions {
-    display: flex; gap: 6px; flex-wrap: wrap;
-    border-top: 1px solid var(--gris3); padding-top: 8px;
-  }
-  .btn-cad-action {
-    font-size: 10px; letter-spacing: .5px; text-transform: uppercase;
-    background: none; border: 1px solid var(--gris2); color: var(--gris);
-    padding: 6px 12px; cursor: pointer; transition: border-color .2s, color .2s;
-    white-space: nowrap; flex-shrink: 0;
-  }
+  .cadete-card-badge { display: inline-block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 6px; font-weight: 500; margin-left: 6px; vertical-align: middle; background: rgba(176,58,46,.08); color: var(--rojo); border: 1px solid rgba(176,58,46,.25); }
+  .cadete-card-actions { display: flex; gap: 6px; flex-wrap: wrap; border-top: 1px solid var(--gris3); padding-top: 8px; }
+  .btn-cad-action { font-size: 10px; letter-spacing: .5px; text-transform: uppercase; background: none; border: 1px solid var(--gris2); color: var(--gris); padding: 6px 12px; cursor: pointer; transition: border-color .2s, color .2s; white-space: nowrap; flex-shrink: 0; }
   .btn-cad-action:hover { border-color: var(--dorado); color: var(--dorado2); }
   .btn-cad-action.danger:hover { border-color: var(--rojo); color: var(--rojo); }
+  .btn-cancelar { height: 42px; background: none; border: 1px solid var(--gris2); color: var(--gris); font-family: var(--fd); font-size: 15px; letter-spacing: 1px; padding: 0 16px; cursor: pointer; transition: border-color .2s, color .2s; }
+  .btn-cancelar:hover { border-color: var(--carbon); color: var(--carbon); }
 
-  .btn-cancelar-cadete {
-    height: 42px; background: none; border: 1px solid var(--gris2); color: var(--gris);
-    font-family: var(--fd); font-size: 15px; letter-spacing: 1px; padding: 0 16px;
-    cursor: pointer; transition: border-color .2s, color .2s; white-space: nowrap;
-  }
-  .btn-cancelar-cadete:hover { border-color: var(--carbon); color: var(--carbon); }
+  @media (max-width: 480px) { .topbar-user { display: none; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
 
-<!-- PAGE LOADER -->
 <div id="page-loader">
   <div class="loader-logo">ALAR<span>Ó</span></div>
   <div class="loader-sub"><span class="spin"></span> CARGANDO</div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- MODAL CONFIRMACIÓN -->
 <div id="modal-overlay" class="hidden">
   <div class="modal-box">
-    <div class="modal-title" id="modal-title">Confirmar acción</div>
-    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-title" id="modal-title">Confirmar</div>
+    <div class="modal-body"  id="modal-body"></div>
     <div class="modal-btns">
       <button class="btn-confirm" id="modal-confirm">CONFIRMAR</button>
       <button class="btn-cancel"  id="modal-cancel">CANCELAR</button>
@@ -355,14 +224,11 @@
   </div>
 </div>
 
-<!-- ═══ LOGIN ═══ -->
+<!-- LOGIN -->
 <div class="screen active" id="screen-login">
   <div class="login-bg"></div>
   <div class="login-card">
-    <div class="brand">
-      <div class="brand-name">ALARÓ</div>
-      <div class="brand-dot"></div>
-    </div>
+    <div class="brand"><div class="brand-name">ALARÓ</div><div class="brand-dot"></div></div>
     <div class="brand-sub">Sistema de Tareas</div>
     <label class="input-label" for="pin-field">Ingresá tu PIN</label>
     <input class="pin-single" type="tel" id="pin-field" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="••••">
@@ -371,7 +237,7 @@
   </div>
 </div>
 
-<!-- ═══ CADETE ═══ -->
+<!-- CADETE -->
 <div class="screen" id="screen-cadete">
   <div class="topbar">
     <div class="topbar-brand">ALAR<span class="dot">Ó</span></div>
@@ -381,32 +247,44 @@
     </div>
   </div>
   <div class="cadete-body">
-    <div class="date-header">
-      <div>
-        <div class="date-title" id="cadete-fecha-display"></div>
-        <div class="date-sub"   id="cadete-nombre-display"></div>
+
+    <!-- Navegación de días -->
+    <div class="day-nav">
+      <button class="day-nav-btn" id="btn-dia-anterior">&#8592;</button>
+      <div class="day-nav-center">
+        <div class="day-nav-fecha" id="cadete-fecha-display"></div>
+        <div class="day-nav-sub"   id="cadete-nombre-display"></div>
+        <button class="btn-hoy" id="btn-dia-hoy" style="display:none">HOY</button>
       </div>
-      <div class="progress-wrap">
-        <div class="progress-lbl">Progreso</div>
-        <div class="progress-bar-bg"><div class="progress-bar-fill" id="cad-prog-fill" style="width:0%"></div></div>
-        <div class="progress-txt" id="cad-prog-txt">0 / 0</div>
-      </div>
+      <button class="day-nav-btn" id="btn-dia-siguiente">&#8594;</button>
     </div>
+
+    <!-- Progreso -->
+    <div class="progress-wrap">
+      <div class="progress-lbl">Progreso</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="cad-prog-fill" style="width:0%"></div></div>
+      <div class="progress-txt" id="cad-prog-txt">0 / 0</div>
+    </div>
+
     <div id="cadete-vencidas-section" style="display:none">
-      <div class="section-label" style="color:var(--rojo2)">Vencidas de días anteriores</div>
+      <div class="section-label" style="color:var(--rojo)">Vencidas de días anteriores</div>
       <div id="cadete-vencidas-list"></div>
       <div style="margin-bottom:1.5rem"></div>
     </div>
-    <div class="section-label">Tareas de hoy</div>
+    <div class="section-label" id="cadete-hoy-label">Tareas del día</div>
     <div id="cadete-tareas-list"></div>
-    <div id="cadete-empty" class="empty-state" style="display:none">No hay tareas asignadas para hoy.</div>
+    <div id="cadete-empty" class="empty-state" style="display:none">No hay tareas asignadas para este día.</div>
   </div>
 </div>
 
-<!-- ═══ ADMIN ═══ -->
+<!-- ADMIN -->
 <div class="screen" id="screen-admin">
   <div class="topbar">
-    <div class="topbar-brand">ALAR<span class="dot">Ó</span> <span style="font-size:13px;color:var(--gris);font-family:var(--fb);font-weight:300;margin-left:6px;letter-spacing:1px">ADMIN</span></div>
+    <div class="topbar-brand">
+      ALAR<span class="dot">Ó</span>
+      <span style="font-size:13px;color:var(--gris);font-family:var(--fb);font-weight:300;margin-left:6px;letter-spacing:1px">ADMIN</span>
+      <div class="topbar-badge" id="admin-inicial-badge" style="margin-left:10px;display:none"></div>
+    </div>
     <button class="btn-logout" id="btn-logout-admin">SALIR</button>
   </div>
   <div class="admin-body">
@@ -414,10 +292,10 @@
       <button class="admin-tab active" data-tab="panel">Panel</button>
       <button class="admin-tab" data-tab="tareas">Tareas</button>
       <button class="admin-tab" data-tab="nueva">+ Nueva tarea</button>
-      <button class="admin-tab" data-tab="cadetes">Cadetes</button>
+      <button class="admin-tab" data-tab="usuarios">Usuarios</button>
     </div>
 
-    <!-- TAB PANEL -->
+    <!-- PANEL -->
     <div class="tab-panel active" id="tab-panel">
       <div class="stats-grid">
         <div class="stat-box white"><div class="stat-n" id="st-total">—</div><div class="stat-l">Hoy total</div></div>
@@ -429,7 +307,7 @@
       <div id="admin-cadetes-prog"></div>
     </div>
 
-    <!-- TAB TAREAS -->
+    <!-- TAREAS -->
     <div class="tab-panel" id="tab-tareas">
       <div class="tasks-filter">
         <input class="filter-input" type="date" id="filter-fecha">
@@ -444,118 +322,93 @@
       <div class="admin-table-wrap">
         <table class="admin-table">
           <thead><tr>
-            <th>#</th><th>Tarea</th><th>Dirección</th><th>Cadete</th><th>Fecha</th><th>Estado</th><th></th>
+            <th>#</th><th>Tarea</th><th>Dirección</th><th>Cadete</th><th>Fecha</th><th>Por</th><th>Estado</th><th></th>
           </tr></thead>
           <tbody id="admin-tbody"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- TAB NUEVA -->
+    <!-- NUEVA / EDITAR TAREA -->
     <div class="tab-panel" id="tab-nueva">
+      <div class="section-label" id="tarea-form-title" style="margin-bottom:14px">Nueva tarea</div>
       <div class="form-grid">
         <div class="form-group"><label class="input-label">Fecha</label><input class="form-field" type="date" id="nf-fecha"></div>
         <div class="form-group"><label class="input-label">Cadete</label><select class="form-field" id="nf-cadete"><option value="">Seleccioná...</option></select></div>
-        <div class="form-group full"><label class="input-label">Descripción de la tarea</label><input class="form-field" type="text" id="nf-tarea" placeholder="Ej: Retirar facturas del depósito"></div>
+        <div class="form-group full"><label class="input-label">Descripción</label><input class="form-field" type="text" id="nf-tarea" placeholder="Ej: Retirar facturas del depósito"></div>
         <div class="form-group full"><label class="input-label">Dirección</label><input class="form-field" type="text" id="nf-dir" placeholder="Ej: Av. 44 N°1230, La Plata"></div>
         <div class="form-group full"><label class="input-label">Notas (opcional)</label><input class="form-field" type="text" id="nf-notas" placeholder="Aclaraciones adicionales"></div>
       </div>
-      <button class="btn-add" id="btn-nueva-tarea">AGREGAR TAREA</button>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn-add" id="btn-guardar-tarea">AGREGAR TAREA</button>
+        <button class="btn-cancelar" id="btn-cancelar-tarea" style="display:none">CANCELAR</button>
+      </div>
       <div class="form-msg" id="form-msg"></div>
     </div>
 
-    <!-- TAB CADETES -->
-    <div class="tab-panel" id="tab-cadetes">
-
-      <div class="section-label" style="margin-bottom:12px">Cadetes registrados</div>
-      <div id="cadetes-list-wrap" style="margin-bottom:2rem"></div>
-
-      <div id="cadete-form-wrap">
-        <div class="section-label" id="cadete-form-title" style="margin-bottom:12px">Nuevo cadete</div>
+    <!-- USUARIOS -->
+    <div class="tab-panel" id="tab-usuarios">
+      <div class="section-label" style="margin-bottom:12px">Usuarios registrados</div>
+      <div id="usuarios-list-wrap" style="margin-bottom:2rem"></div>
+      <div id="usuario-form-wrap">
+        <div class="section-label" id="usuario-form-title" style="margin-bottom:12px">Nuevo cadete</div>
         <div class="form-grid">
-          <div class="form-group full">
-            <label class="input-label">Nombre completo</label>
-            <input class="form-field" type="text" id="cf-nombre" placeholder="Ej: Carlos Pérez">
-          </div>
-          <div class="form-group">
-            <label class="input-label">PIN (4 dígitos)</label>
-            <input class="form-field" type="tel" id="cf-pin" maxlength="4" inputmode="numeric" placeholder="Ej: 4321">
-          </div>
+          <div class="form-group full"><label class="input-label">Nombre completo</label><input class="form-field" type="text" id="cf-nombre" placeholder="Ej: Carlos Pérez"></div>
+          <div class="form-group"><label class="input-label">PIN (4 dígitos)</label><input class="form-field" type="tel" id="cf-pin" maxlength="4" inputmode="numeric" placeholder="Ej: 4321"></div>
           <div class="form-group" style="justify-content:flex-end">
             <label class="input-label" style="visibility:hidden">—</label>
             <div style="display:flex;gap:8px;align-items:flex-end">
-              <button class="btn-add" id="btn-guardar-cadete" style="padding:10px 20px;font-size:15px">GUARDAR</button>
-              <button class="btn-cancelar-cadete" id="btn-cancelar-cadete">CANCELAR</button>
+              <button class="btn-add" id="btn-guardar-usuario" style="padding:10px 20px;font-size:15px">GUARDAR</button>
+              <button class="btn-cancelar" id="btn-cancelar-usuario" style="display:none">CANCELAR</button>
             </div>
           </div>
         </div>
-        <div class="form-msg" id="cadete-form-msg"></div>
+        <div class="form-msg" id="usuario-form-msg"></div>
       </div>
     </div>
 
-  </div><!-- /admin-body -->
-</div><!-- /screen-admin -->
+  </div>
+</div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbw_sqQEd058N_47VVAAQ3AgBPkV5BumyKkQaA6yrqqX9DhCKbffxJfDfSkEHOuX4IvIhA/exec';
+const API = 'https://script.google.com/macros/s/AKfycbxwlCH4cRc1s-_GPBiIUaUlZ_OlZoTUauWQL4GMjTgRQ7nRQeo0ZiPiXR1xZhZJ57Khdg/exec';
 
-// ── ESTADO ──
-let appData = { tareas: [], cadetes: [], config: [] };
+let appData    = { tareas: [], usuarios: [] };
 let currentUser = null;
-
-// ── DEMO DATA ──
-const DEMO = {
-  cadetes: [],
-  config: [{ clave:'admin_pin', valor:'9999' }],
-  tareas: []
-};
+let diaOffset  = 0; // 0=hoy, +1=mañana, -1=ayer
+let editandoTareaId   = null;
+let editandoUsuarioId = null;
 
 // ── UTILS ──
 function hoyISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
+function offsetISO(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 function dmyToISO(raw) {
   if (!raw) return '';
   const s = String(raw).trim();
-
-  // Número serial de Excel/Sheets (ej: 46000)
   if (/^\d{4,6}$/.test(s)) {
-    const excelEpoch = new Date(1899, 11, 30);
-    const d = new Date(excelEpoch.getTime() + parseInt(s) * 86400000);
+    const ep = new Date(1899,11,30);
+    const d  = new Date(ep.getTime() + parseInt(s)*86400000);
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   }
-
-  // Ya en formato ISO: AAAA-MM-DD
-  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
-
-  // Formato con barras: puede ser DD/MM/AAAA o MM/DD/AAAA
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
   if (s.includes('/')) {
-    const parts = s.split('/');
-    if (parts.length === 3) {
-      const [a, b, c] = parts;
-      // Si el tercer bloque tiene 4 dígitos → es DD/MM/AAAA o MM/DD/AAAA
-      if (c.length === 4) {
-        const day   = parseInt(a);
-        const month = parseInt(b);
-        // Si el primer número > 12, es DD/MM/AAAA
-        if (day > 12) return `${c}-${b.padStart(2,'0')}-${a.padStart(2,'0')}`;
-        // Si el segundo número > 12, es MM/DD/AAAA
-        if (month > 12) return `${c}-${a.padStart(2,'0')}-${b.padStart(2,'0')}`;
-        // Ambiguos (ej 05/06) → asumimos DD/MM/AAAA (formato Argentina)
-        return `${c}-${b.padStart(2,'0')}-${a.padStart(2,'0')}`;
-      }
-      // Si el primero tiene 4 dígitos → AAAA/MM/DD
-      if (a.length === 4) return `${a}-${b.padStart(2,'0')}-${c.padStart(2,'0')}`;
+    const [a,b,c] = s.split('/');
+    if (c && c.length===4) {
+      if (parseInt(a)>12) return `${c}-${b.padStart(2,'0')}-${a.padStart(2,'0')}`;
+      if (parseInt(b)>12) return `${c}-${a.padStart(2,'0')}-${b.padStart(2,'0')}`;
+      return `${c}-${b.padStart(2,'0')}-${a.padStart(2,'0')}`;
     }
+    if (a && a.length===4) return `${a}-${b.padStart(2,'0')}-${c.padStart(2,'0')}`;
   }
-
-  // Intentar parseo nativo como último recurso
-  const parsed = new Date(s);
-  if (!isNaN(parsed)) {
-    return `${parsed.getFullYear()}-${String(parsed.getMonth()+1).padStart(2,'0')}-${String(parsed.getDate()).padStart(2,'0')}`;
-  }
-
+  const p = new Date(s);
+  if (!isNaN(p)) return `${p.getFullYear()}-${String(p.getMonth()+1).padStart(2,'0')}-${String(p.getDate()).padStart(2,'0')}`;
   return '';
 }
 function isoToDMY(iso) {
@@ -563,23 +416,31 @@ function isoToDMY(iso) {
   const [y,m,d] = iso.split('-');
   return `${d}/${m}/${y}`;
 }
-function esAnterior(dmy) { return dmyToISO(dmy) < hoyISO(); }
-function esHoy(dmy)      { return dmyToISO(dmy) === hoyISO(); }
-function iniciales(n)    { return n.split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2); }
+function isoToLabel(iso) {
+  if (!iso) return '';
+  const dias  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const [y,m,d] = iso.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  return `${dias[dt.getDay()]} ${d} ${meses[m-1]} ${y}`;
+}
+function esAnteriorISO(iso) { return iso < hoyISO(); }
+function iniciales(n) { return n.split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2); }
 function getEstadoReal(t) {
-  if (t.estado === 'hecha') return 'hecha';
-  if (esAnterior(t.fecha))  return 'vencida';
+  if (t.estado==='hecha') return 'hecha';
+  if (esAnteriorISO(dmyToISO(t.fecha))) return 'vencida';
   return 'pendiente';
 }
+function getCadetes() { return appData.usuarios.filter(u => String(u.rol)==='cadete' || !u.rol); }
+function getAdmins()  { return appData.usuarios.filter(u => String(u.rol)==='admin'); }
 
 // ── TOAST ──
 let toastTimer;
 function showToast(msg, dur=2500) {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), dur);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), dur);
 }
 
 // ── MODAL ──
@@ -592,173 +453,183 @@ function showModal(titulo, cuerpo) {
     document.getElementById('modal-overlay').classList.remove('hidden');
   });
 }
-document.getElementById('modal-confirm').addEventListener('click', () => {
+document.getElementById('modal-confirm').addEventListener('click', ()=>{
   document.getElementById('modal-overlay').classList.add('hidden');
-  if (modalResolve) { modalResolve(true); modalResolve = null; }
+  if (modalResolve) { modalResolve(true); modalResolve=null; }
 });
-document.getElementById('modal-cancel').addEventListener('click', () => {
+document.getElementById('modal-cancel').addEventListener('click', ()=>{
   document.getElementById('modal-overlay').classList.add('hidden');
-  if (modalResolve) { modalResolve(false); modalResolve = null; }
+  if (modalResolve) { modalResolve(false); modalResolve=null; }
 });
-document.getElementById('modal-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal-overlay')) {
+document.getElementById('modal-overlay').addEventListener('click', e=>{
+  if (e.target===document.getElementById('modal-overlay')) {
     document.getElementById('modal-overlay').classList.add('hidden');
-    if (modalResolve) { modalResolve(false); modalResolve = null; }
+    if (modalResolve) { modalResolve(false); modalResolve=null; }
   }
 });
 
 // ── SCREEN ──
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 
 // ── API ──
 async function fetchHoja(hoja) {
   const ctrl = new AbortController();
-  const timeout = setTimeout(() => ctrl.abort(), 8000);
+  const t = setTimeout(()=>ctrl.abort(), 8000);
   try {
-    const r = await fetch(`${API}?hoja=${hoja}`, { signal: ctrl.signal });
-    clearTimeout(timeout);
-    const text = await r.text();
-    return JSON.parse(text);
-  } catch(e) {
-    clearTimeout(timeout);
-    throw e;
-  }
+    const r = await fetch(`${API}?hoja=${hoja}`, {signal:ctrl.signal});
+    clearTimeout(t);
+    return JSON.parse(await r.text());
+  } catch(e) { clearTimeout(t); throw e; }
 }
 async function postData(body) {
   const ctrl = new AbortController();
-  const timeout = setTimeout(() => ctrl.abort(), 8000);
+  const t = setTimeout(()=>ctrl.abort(), 8000);
   try {
-    const r = await fetch(API, { method:'POST', body: JSON.stringify(body), signal: ctrl.signal });
-    clearTimeout(timeout);
-    const text = await r.text();
-    return JSON.parse(text);
-  } catch(e) {
-    clearTimeout(timeout);
-    throw e;
-  }
+    const r = await fetch(API, {method:'POST', body:JSON.stringify(body), signal:ctrl.signal});
+    clearTimeout(t);
+    return JSON.parse(await r.text());
+  } catch(e) { clearTimeout(t); throw e; }
 }
 
-// ── CARGA DE DATOS ──
+// ── CARGA ──
 async function loadAllData() {
-  // Fetch cada hoja por separado con fallback individual
-  async function safe(hoja) {
-    try { return await fetchHoja(hoja); } catch(e) { return null; }
-  }
-  const [tareas, cadetes, config] = await Promise.all([safe('tareas'), safe('cadetes'), safe('config')]);
-  appData.tareas  = (tareas  && tareas.length)  ? tareas  : DEMO.tareas;
-  appData.cadetes = (cadetes && cadetes.length) ? cadetes : DEMO.cadetes;
-  appData.config  = (config  && config.length)  ? config  : DEMO.config;
+  async function safe(h) { try { return await fetchHoja(h); } catch(e) { return null; } }
+  const [tareas, usuarios] = await Promise.all([safe('tareas'), safe('usuarios')]);
+  appData.tareas   = (tareas   && tareas.length)   ? tareas   : [];
+  appData.usuarios = (usuarios && usuarios.length) ? usuarios : [];
 }
 
 // ── LOGIN ──
 const pinField = document.getElementById('pin-field');
-pinField.addEventListener('input', () => {
+pinField.addEventListener('input', ()=>{
   pinField.value = pinField.value.replace(/\D/g,'');
   document.getElementById('login-error').textContent = '';
-  if (pinField.value.length === 4) doLogin();
+  if (pinField.value.length===4) doLogin();
 });
-pinField.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+pinField.addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
 document.getElementById('btn-login').addEventListener('click', doLogin);
 
 async function doLogin() {
   const pin = pinField.value.trim();
-  if (pin.length < 4) {
-    document.getElementById('login-error').textContent = 'Ingresá los 4 dígitos del PIN.';
-    return;
+  if (pin.length<4) { document.getElementById('login-error').textContent='Ingresá los 4 dígitos del PIN.'; return; }
+
+  const usuario = appData.usuarios.find(u => String(u.pin)===pin);
+  if (!usuario) {
+    document.getElementById('login-error').textContent='PIN incorrecto. Intentá de nuevo.';
+    pinField.value=''; pinField.focus(); return;
   }
-  const adminCfg = appData.config.find(r => String(r.clave) === 'admin_pin');
-  if (adminCfg && String(adminCfg.valor) === pin) {
-    currentUser = { tipo: 'admin' };
-    pinField.value = '';
+  const inactivo = String(usuario.activo)==='false' || String(usuario.activo)==='0';
+  if (inactivo) {
+    document.getElementById('login-error').textContent='Tu usuario está desactivado. Hablá con la administración.';
+    pinField.value=''; pinField.focus(); return;
+  }
+  pinField.value='';
+  currentUser = { ...usuario };
+
+  if (String(usuario.rol)==='admin') {
+    // Mostrar inicial en topbar
+    const badge = document.getElementById('admin-inicial-badge');
+    badge.textContent = usuario.inicial || '?';
+    badge.style.display = 'flex';
     initAdmin();
     showScreen('screen-admin');
-    return;
-  }
-  const cadete = appData.cadetes.find(c => String(c.pin) === pin);
-  if (cadete) {
-    const inactivo = String(cadete.activo) === 'false' || String(cadete.activo) === '0';
-    if (inactivo) {
-      document.getElementById('login-error').textContent = 'Tu usuario está desactivado. Hablá con la administración.';
-      pinField.value = ''; pinField.focus(); return;
-    }
-    currentUser = { tipo: 'cadete', cadete };
-    pinField.value = '';
-    initCadete(cadete);
+  } else {
+    document.getElementById('cadete-topbar-name').textContent = usuario.nombre;
+    diaOffset = 0;
+    renderCadete();
     showScreen('screen-cadete');
-    return;
   }
-  document.getElementById('login-error').textContent = 'PIN incorrecto. Intentá de nuevo.';
-  pinField.value = '';
-  pinField.focus();
 }
 
 // ── LOGOUT ──
 function logout() {
-  currentUser = null;
-  pinField.value = '';
-  document.getElementById('login-error').textContent = '';
+  currentUser = null; diaOffset = 0;
+  pinField.value='';
+  document.getElementById('login-error').textContent='';
+  document.getElementById('admin-inicial-badge').style.display='none';
   showScreen('screen-login');
-  setTimeout(() => pinField.focus(), 100);
+  setTimeout(()=>pinField.focus(), 100);
 }
 document.getElementById('btn-logout-cadete').addEventListener('click', logout);
 document.getElementById('btn-logout-admin').addEventListener('click', logout);
 
-// ════════════════════════════
+// ══════════════════════════════
 // VISTA CADETE
-// ════════════════════════════
-function initCadete(cadete) {
-  const dias   = ['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'];
-  const meses  = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
-  const ahora  = new Date();
-  document.getElementById('cadete-topbar-name').textContent  = cadete.nombre;
-  document.getElementById('cadete-nombre-display').textContent = cadete.nombre.toUpperCase();
-  document.getElementById('cadete-fecha-display').textContent  =
-    `${dias[ahora.getDay()]} ${ahora.getDate()} ${meses[ahora.getMonth()]}`;
+// ══════════════════════════════
+function renderCadete() {
+  const iso     = offsetISO(diaOffset);
+  const esHoy   = diaOffset===0;
+  const esFuturo = diaOffset>0;
 
-  const misTareas = appData.tareas.filter(t => String(t.cadete_id) === String(cadete.id));
-  const vencidas  = misTareas.filter(t => esAnterior(t.fecha) && t.estado !== 'hecha');
-  const deHoy     = misTareas.filter(t => esHoy(t.fecha));
+  // Header
+  document.getElementById('cadete-nombre-display').textContent = currentUser.nombre.toUpperCase();
+  document.getElementById('cadete-fecha-display').textContent  = isoToLabel(iso).toUpperCase();
+  document.getElementById('btn-dia-hoy').style.display = esHoy ? 'none' : 'inline-block';
+
+  const misTareas = appData.tareas.filter(t => String(t.cadete_id)===String(currentUser.id));
+
+  // Vencidas solo se muestran si estamos en "hoy"
+  const vencidas = esHoy
+    ? misTareas.filter(t => esAnteriorISO(dmyToISO(t.fecha)) && t.estado!=='hecha')
+    : [];
+
+  // Tareas del día seleccionado
+  const delDia = misTareas.filter(t => dmyToISO(t.fecha)===iso);
 
   // Progress
-  const hechas = deHoy.filter(t => t.estado === 'hecha').length;
-  const total  = deHoy.length;
-  const pct    = total > 0 ? Math.round(hechas/total*100) : 0;
-  document.getElementById('cad-prog-fill').style.width = pct + '%';
+  const hechas = delDia.filter(t=>t.estado==='hecha').length;
+  const total  = delDia.length;
+  const pct    = total>0 ? Math.round(hechas/total*100) : 0;
+  document.getElementById('cad-prog-fill').style.width = pct+'%';
   document.getElementById('cad-prog-txt').textContent  = `${hechas} / ${total}`;
 
   // Vencidas
   const secV = document.getElementById('cadete-vencidas-section');
   const lstV = document.getElementById('cadete-vencidas-list');
   if (vencidas.length) {
-    secV.style.display = 'block';
-    lstV.innerHTML = vencidas.map(t => taskCardHTML(t, true)).join('');
+    secV.style.display='block';
+    lstV.innerHTML=vencidas.map(t=>taskCardHTML(t,true)).join('');
   } else {
-    secV.style.display = 'none';
-    lstV.innerHTML = '';
+    secV.style.display='none'; lstV.innerHTML='';
   }
 
-  // Hoy
-  const lst = document.getElementById('cadete-tareas-list');
-  document.getElementById('cadete-empty').style.display = (!deHoy.length && !vencidas.length) ? 'block' : 'none';
-  lst.innerHTML = deHoy.map(t => taskCardHTML(t, false)).join('');
+  // Label día
+  document.getElementById('cadete-hoy-label').textContent =
+    esHoy ? 'Tareas de hoy' : esFuturo ? 'Tareas programadas' : 'Tareas del día';
 
-  // Click handlers
-  document.querySelectorAll('.task-card[data-id]').forEach(card => {
-    if (card.dataset.estado === 'hecha') return;
-    card.addEventListener('click', () => pedirConfirmCadete(card.dataset.id, card.dataset.tarea));
+  // Lista
+  const lst = document.getElementById('cadete-tareas-list');
+  const empty = document.getElementById('cadete-empty');
+  if (!delDia.length && !vencidas.length) {
+    empty.style.display='block'; lst.innerHTML='';
+  } else {
+    empty.style.display='none';
+    lst.innerHTML=delDia.map(t=>taskCardHTML(t,false)).join('');
+  }
+
+  // Click handlers — solo si no es futuro (no se puede marcar lo que no pasó)
+  document.querySelectorAll('.task-card[data-id]').forEach(card=>{
+    if (card.dataset.estado==='hecha' || esFuturo) return;
+    card.addEventListener('click', ()=>pedirConfirmCadete(card.dataset.id, card.dataset.tarea));
   });
 }
 
+// Nav días
+document.getElementById('btn-dia-anterior').addEventListener('click', ()=>{ diaOffset--; renderCadete(); });
+document.getElementById('btn-dia-siguiente').addEventListener('click', ()=>{ diaOffset++; renderCadete(); });
+document.getElementById('btn-dia-hoy').addEventListener('click', ()=>{ diaOffset=0; renderCadete(); });
+
 function taskCardHTML(t, esVencida) {
-  const estado  = esVencida && t.estado !== 'hecha' ? 'vencida' : t.estado;
-  const hecha   = t.estado === 'hecha';
-  const tag     = esVencida && !hecha
+  const estado = esVencida && t.estado!=='hecha' ? 'vencida' : t.estado;
+  const hecha  = t.estado==='hecha';
+  const tag    = esVencida && !hecha
     ? `<span class="task-tag tag-vencida">Vencida — ${isoToDMY(dmyToISO(t.fecha))}</span>`
     : hecha ? `<span class="task-tag tag-hecha">Hecha</span>` : '';
+  const asigPor = t.asignado_por ? `<div class="task-asignado">Asignada por: ${t.asignado_por}</div>` : '';
   return `
     <div class="task-card ${estado}" data-id="${t.id}" data-estado="${t.estado}" data-tarea="${t.tarea.replace(/"/g,'&quot;')}">
       <div class="task-check"><span class="check-icon">✓</span></div>
@@ -766,67 +637,63 @@ function taskCardHTML(t, esVencida) {
         <div class="task-name">${t.tarea}</div>
         ${t.direccion ? `<div class="task-addr">📍 ${t.direccion}</div>` : ''}
         ${t.notas     ? `<div class="task-notas">${t.notas}</div>` : ''}
+        ${asigPor}
         ${tag}
       </div>
     </div>`;
 }
 
-async function pedirConfirmCadete(id, nombreTarea) {
-  const ok = await showModal(
-    'Confirmar tarea',
-    `¿Estás seguro que querés marcar como hecha esta tarea?<div class="modal-task">"${nombreTarea}"</div>`
-  );
+async function pedirConfirmCadete(id, nombre) {
+  const ok = await showModal('Confirmar tarea',
+    `¿Querés marcar como hecha esta tarea?<div class="modal-task">"${nombre}"</div>`);
   if (!ok) return;
-  const idx = appData.tareas.findIndex(t => String(t.id) === String(id));
-  if (idx !== -1) appData.tareas[idx].estado = 'hecha';
-  initCadete(currentUser.cadete);
+  const idx = appData.tareas.findIndex(t=>String(t.id)===String(id));
+  if (idx!==-1) appData.tareas[idx].estado='hecha';
+  renderCadete();
   showToast('Tarea marcada como hecha ✓');
-  try {
-    await postData({ hoja:'tareas', accion:'actualizar_estado', id, estado:'hecha' });
-  } catch(e) {
-    showToast('Error al guardar en Sheets.', 3000);
-  }
+  try { await postData({hoja:'tareas', accion:'actualizar_estado', id, estado:'hecha'}); }
+  catch(e) { showToast('Error al guardar en Sheets.', 3000); }
 }
 
-// ════════════════════════════
+// ══════════════════════════════
 // VISTA ADMIN
-// ════════════════════════════
+// ══════════════════════════════
 function initAdmin() {
   renderPanel();
   poblarFiltrosYSelects();
   setupFiltros();
-  setupNuevaTarea();
-  setupCadetes();
+  setupTareaForm();
+  setupUsuarios();
 }
 
 function renderPanel() {
-  const hoy = appData.tareas.filter(t => esHoy(t.fecha));
+  const cadetes = getCadetes();
+  const hoy = appData.tareas.filter(t=>dmyToISO(t.fecha)===hoyISO());
   document.getElementById('st-total').textContent  = hoy.length;
-  document.getElementById('st-hechas').textContent = hoy.filter(t => t.estado === 'hecha').length;
-  document.getElementById('st-pend').textContent   = hoy.filter(t => t.estado === 'pendiente').length;
-  document.getElementById('st-venc').textContent   = appData.tareas.filter(t => esAnterior(t.fecha) && t.estado !== 'hecha').length;
+  document.getElementById('st-hechas').textContent = hoy.filter(t=>t.estado==='hecha').length;
+  document.getElementById('st-pend').textContent   = hoy.filter(t=>t.estado==='pendiente').length;
+  document.getElementById('st-venc').textContent   = appData.tareas.filter(t=>esAnteriorISO(dmyToISO(t.fecha))&&t.estado!=='hecha').length;
 
-  document.getElementById('admin-cadetes-prog').innerHTML = appData.cadetes.map(c => {
-    const ct = hoy.filter(t => String(t.cadete_id) === String(c.id));
-    const h  = ct.filter(t => t.estado === 'hecha').length;
-    const n  = ct.length;
-    const p  = n ? Math.round(h/n*100) : 0;
-    return `
-      <div class="cadete-prog-row">
-        <div class="cad-avatar">${iniciales(c.nombre)}</div>
-        <div class="cad-n">${c.nombre}</div>
-        <div class="cad-bar-bg"><div class="cad-bar-fill" style="width:${p}%"></div></div>
-        <div class="cad-pct">${h} / ${n}</div>
-      </div>`;
+  document.getElementById('admin-cadetes-prog').innerHTML = cadetes.map(c=>{
+    const ct = hoy.filter(t=>String(t.cadete_id)===String(c.id));
+    const h=ct.filter(t=>t.estado==='hecha').length, n=ct.length;
+    const p=n?Math.round(h/n*100):0;
+    return `<div class="cadete-prog-row">
+      <div class="cad-avatar">${iniciales(c.nombre)}</div>
+      <div class="cad-n">${c.nombre}</div>
+      <div class="cad-bar-bg"><div class="cad-bar-fill" style="width:${p}%"></div></div>
+      <div class="cad-pct">${h} / ${n}</div>
+    </div>`;
   }).join('') || '<p style="color:var(--gris);font-size:13px;padding:1rem 0">Sin cadetes cargados.</p>';
 }
 
 function poblarFiltrosYSelects() {
-  const activos = appData.cadetes.filter(c => String(c.activo) !== 'false' && String(c.activo) !== '0');
-  const opts = appData.cadetes.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
-  const optsActivos = activos.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
-  document.getElementById('filter-cadete').innerHTML = '<option value="">Todos los cadetes</option>' + opts;
-  document.getElementById('nf-cadete').innerHTML     = '<option value="">Seleccioná...</option>' + optsActivos;
+  const cadetes = getCadetes();
+  const activos = cadetes.filter(c=>String(c.activo)!=='false'&&String(c.activo)!=='0');
+  const opts    = cadetes.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');
+  const optsA   = activos.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');
+  document.getElementById('filter-cadete').innerHTML = '<option value="">Todos los cadetes</option>'+opts;
+  document.getElementById('nf-cadete').innerHTML     = '<option value="">Seleccioná...</option>'+optsA;
   document.getElementById('filter-fecha').value = hoyISO();
   document.getElementById('nf-fecha').value     = hoyISO();
   aplicarFiltros();
@@ -837,295 +704,306 @@ function aplicarFiltros() {
   const cadeteId = document.getElementById('filter-cadete').value;
   const estado   = document.getElementById('filter-estado').value;
   let lista = [...appData.tareas];
-  if (fecha)    lista = lista.filter(t => dmyToISO(t.fecha) === fecha);
-  if (cadeteId) lista = lista.filter(t => String(t.cadete_id) === cadeteId);
-  if (estado)   lista = lista.filter(t => getEstadoReal(t) === estado);
+  if (fecha)    lista = lista.filter(t=>dmyToISO(t.fecha)===fecha);
+  if (cadeteId) lista = lista.filter(t=>String(t.cadete_id)===cadeteId);
+  if (estado)   lista = lista.filter(t=>getEstadoReal(t)===estado);
   renderTabla(lista);
 }
 
 function renderTabla(lista) {
   const tbody = document.getElementById('admin-tbody');
   if (!lista.length) {
-    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--gris);text-align:center;padding:2rem">Sin tareas para los filtros seleccionados.</td></tr>`;
+    tbody.innerHTML=`<tr><td colspan="8" style="color:var(--gris);text-align:center;padding:2rem">Sin tareas para los filtros seleccionados.</td></tr>`;
     return;
   }
-  tbody.innerHTML = lista.map(t => {
-    const est = getEstadoReal(t);
-    const pCls = est === 'hecha' ? 'pill-hecha' : est === 'vencida' ? 'pill-venc' : 'pill-pend';
-    const pTxt = est === 'hecha' ? 'Hecha' : est === 'vencida' ? 'Vencida' : 'Pendiente';
-    const cad  = appData.cadetes.find(c => String(c.id) === String(t.cadete_id));
-    const btnTxt = t.estado === 'hecha' ? 'Marcar pendiente' : 'Marcar hecha';
-    return `
-      <tr>
-        <td style="color:var(--gris)">${t.id}</td>
-        <td>${t.tarea}</td>
-        <td style="color:var(--gris)">${t.direccion||'—'}</td>
-        <td>${cad ? cad.nombre : t.cadete_id}</td>
-        <td style="color:var(--gris)">${isoToDMY(dmyToISO(t.fecha))}</td>
-        <td><span class="pill ${pCls}">${pTxt}</span></td>
-        <td><button class="btn-estado" data-id="${t.id}" data-estado="${t.estado}" data-tarea="${t.tarea.replace(/"/g,'&quot;')}" onclick="pedirConfirmAdmin(this)">${btnTxt}</button></td>
-      </tr>`;
+  tbody.innerHTML = lista.map(t=>{
+    const est  = getEstadoReal(t);
+    const pCls = est==='hecha'?'pill-hecha':est==='vencida'?'pill-venc':'pill-pend';
+    const pTxt = est==='hecha'?'Hecha':est==='vencida'?'Vencida':'Pendiente';
+    const cad  = appData.usuarios.find(u=>String(u.id)===String(t.cadete_id));
+    const btnEstado = t.estado==='hecha'?'Marcar pendiente':'Marcar hecha';
+    const canEdit   = t.estado!=='hecha';
+    return `<tr>
+      <td style="color:var(--gris)">${t.id}</td>
+      <td>${t.tarea}</td>
+      <td style="color:var(--gris)">${t.direccion||'—'}</td>
+      <td>${cad?cad.nombre:t.cadete_id}</td>
+      <td style="color:var(--gris)">${isoToDMY(dmyToISO(t.fecha))}</td>
+      <td style="color:var(--dorado2);font-weight:500">${t.asignado_por||'—'}</td>
+      <td><span class="pill ${pCls}">${pTxt}</span></td>
+      <td><div class="td-actions">
+        <button class="btn-estado" data-id="${t.id}" data-estado="${t.estado}" data-tarea="${t.tarea.replace(/"/g,'&quot;')}" onclick="pedirConfirmAdmin(this)">${btnEstado}</button>
+        ${canEdit?`<button class="btn-estado edit" onclick="editarTarea('${t.id}')">✎ Editar</button>`:''}
+        <button class="btn-estado danger" onclick="eliminarTarea('${t.id}','${t.tarea.replace(/'/g,"\\'")}')">✕</button>
+      </div></td>
+    </tr>`;
   }).join('');
 }
 
 async function pedirConfirmAdmin(btn) {
-  const id          = btn.dataset.id;
-  const estadoActual = btn.dataset.estado;
-  const nombreTarea  = btn.dataset.tarea;
-  const nuevoEstado  = estadoActual === 'hecha' ? 'pendiente' : 'hecha';
-  const accionTxt    = nuevoEstado === 'hecha' ? 'marcar como <strong>hecha</strong>' : 'marcar como <strong>pendiente</strong>';
-
-  const ok = await showModal(
-    'Cambiar estado',
-    `¿Querés ${accionTxt} esta tarea?<div class="modal-task">"${nombreTarea}"</div>`
-  );
+  const id=btn.dataset.id, estadoActual=btn.dataset.estado, nombreTarea=btn.dataset.tarea;
+  const nuevoEstado = estadoActual==='hecha'?'pendiente':'hecha';
+  const accionTxt   = nuevoEstado==='hecha'?'marcar como <strong>hecha</strong>':'marcar como <strong>pendiente</strong>';
+  const ok = await showModal('Cambiar estado',
+    `¿Querés ${accionTxt} esta tarea?<div class="modal-task">"${nombreTarea}"</div>`);
   if (!ok) return;
+  const idx=appData.tareas.findIndex(t=>String(t.id)===String(id));
+  if (idx!==-1) appData.tareas[idx].estado=nuevoEstado;
+  renderPanel(); aplicarFiltros();
+  showToast(nuevoEstado==='hecha'?'Marcada como hecha ✓':'Marcada como pendiente');
+  try { await postData({hoja:'tareas',accion:'actualizar_estado',id,estado:nuevoEstado}); }
+  catch(e) { showToast('Error al guardar.',3000); }
+}
 
-  const idx = appData.tareas.findIndex(t => String(t.id) === String(id));
-  if (idx !== -1) appData.tareas[idx].estado = nuevoEstado;
-  renderPanel();
-  aplicarFiltros();
-  showToast(nuevoEstado === 'hecha' ? 'Marcada como hecha ✓' : 'Marcada como pendiente');
-  try {
-    await postData({ hoja:'tareas', accion:'actualizar_estado', id, estado: nuevoEstado });
-  } catch(e) {
-    showToast('Error al guardar en Sheets.', 3000);
-  }
+// ── EDITAR / ELIMINAR TAREA ──
+function editarTarea(id) {
+  const t = appData.tareas.find(t=>String(t.id)===String(id));
+  if (!t) return;
+  editandoTareaId = id;
+  // Cambiar a tab nueva
+  document.querySelectorAll('.admin-tab').forEach(tb=>tb.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.admin-tab[data-tab="nueva"]').classList.add('active');
+  document.getElementById('tab-nueva').classList.add('active');
+  // Precargar
+  document.getElementById('nf-fecha').value  = dmyToISO(t.fecha);
+  document.getElementById('nf-tarea').value  = t.tarea;
+  document.getElementById('nf-dir').value    = t.direccion||'';
+  document.getElementById('nf-notas').value  = t.notas||'';
+  document.getElementById('nf-cadete').value = t.cadete_id;
+  document.getElementById('tarea-form-title').textContent = `Editando tarea #${id}`;
+  document.getElementById('btn-guardar-tarea').textContent = 'ACTUALIZAR TAREA';
+  document.getElementById('btn-cancelar-tarea').style.display='inline-block';
+  document.getElementById('form-msg').textContent='';
+  window.scrollTo(0,0);
+}
+
+async function eliminarTarea(id, nombre) {
+  const ok = await showModal('Eliminar tarea',
+    `¿Estás seguro? Esta acción no se puede deshacer.<div class="modal-task">"${nombre}"</div>`);
+  if (!ok) return;
+  appData.tareas = appData.tareas.filter(t=>String(t.id)!==String(id));
+  renderPanel(); aplicarFiltros();
+  showToast('Tarea eliminada');
+  try { await postData({hoja:'tareas',accion:'eliminar_tarea',id}); }
+  catch(e) { showToast('Error al eliminar.',3000); }
+}
+
+function resetTareaForm() {
+  editandoTareaId=null;
+  document.getElementById('nf-tarea').value ='';
+  document.getElementById('nf-dir').value   ='';
+  document.getElementById('nf-notas').value ='';
+  document.getElementById('nf-fecha').value = hoyISO();
+  document.getElementById('nf-cadete').value='';
+  document.getElementById('form-msg').textContent='';
+  document.getElementById('tarea-form-title').textContent='Nueva tarea';
+  document.getElementById('btn-guardar-tarea').textContent='AGREGAR TAREA';
+  document.getElementById('btn-cancelar-tarea').style.display='none';
 }
 
 function setupFiltros() {
-  ['filter-fecha','filter-cadete','filter-estado'].forEach(id =>
+  ['filter-fecha','filter-cadete','filter-estado'].forEach(id=>
     document.getElementById(id).addEventListener('change', aplicarFiltros)
   );
 }
 
-function setupNuevaTarea() {
-  document.getElementById('btn-nueva-tarea').addEventListener('click', async () => {
+function setupTareaForm() {
+  document.getElementById('btn-cancelar-tarea').addEventListener('click', resetTareaForm);
+  document.getElementById('btn-guardar-tarea').addEventListener('click', async ()=>{
     const fecha = document.getElementById('nf-fecha').value;
     const cid   = document.getElementById('nf-cadete').value;
     const tarea = document.getElementById('nf-tarea').value.trim();
     const dir   = document.getElementById('nf-dir').value.trim();
     const notas = document.getElementById('nf-notas').value.trim();
     const msg   = document.getElementById('form-msg');
-    if (!fecha || !cid || !tarea) {
-      msg.className = 'form-msg err';
-      msg.textContent = 'Completá fecha, cadete y descripción.';
-      return;
+    if (!fecha||!cid||!tarea) { msg.className='form-msg err'; msg.textContent='Completá fecha, cadete y descripción.'; return; }
+    const btn=document.getElementById('btn-guardar-tarea');
+    btn.disabled=true; btn.textContent='GUARDANDO...'; msg.textContent='';
+    const [y,m,d]=fecha.split('-');
+    const fechaDMY=`${d}/${m}/${y}`;
+
+    if (editandoTareaId) {
+      // EDITAR
+      try {
+        await postData({hoja:'tareas',accion:'editar_tarea',id:editandoTareaId,fecha:fechaDMY,tarea,direccion:dir,cadete_id:cid,notas});
+        const idx=appData.tareas.findIndex(t=>String(t.id)===String(editandoTareaId));
+        if (idx!==-1) Object.assign(appData.tareas[idx],{fecha:fechaDMY,tarea,direccion:dir,cadete_id:cid,notas});
+        msg.className='form-msg ok'; msg.textContent='Tarea actualizada.';
+        renderPanel(); aplicarFiltros();
+        showToast('Tarea actualizada ✓');
+        resetTareaForm();
+      } catch(e) { msg.className='form-msg err'; msg.textContent='Error al guardar.'; }
+    } else {
+      // NUEVA
+      const ids=appData.tareas.map(t=>parseInt(t.id)||0);
+      const newId=ids.length?Math.max(...ids)+1:1;
+      const asignadoPor = currentUser.inicial || '';
+      const nueva={id:newId,fecha:fechaDMY,tarea,direccion:dir,cadete_id:cid,estado:'pendiente',notas,asignado_por:asignadoPor};
+      try {
+        await postData({hoja:'tareas',accion:'nueva_tarea',...nueva});
+        appData.tareas.push(nueva);
+        document.getElementById('nf-tarea').value='';
+        document.getElementById('nf-dir').value='';
+        document.getElementById('nf-notas').value='';
+        msg.className='form-msg ok'; msg.textContent=`Tarea #${newId} agregada.`;
+        renderPanel(); aplicarFiltros();
+        showToast('Tarea agregada ✓');
+      } catch(e) { msg.className='form-msg err'; msg.textContent='Error al guardar.'; }
     }
-    const btn = document.getElementById('btn-nueva-tarea');
-    btn.disabled = true; btn.textContent = 'GUARDANDO...'; msg.textContent = '';
-    const ids   = appData.tareas.map(t => parseInt(t.id)||0);
-    const newId = ids.length ? Math.max(...ids)+1 : 1;
-    const [y,m,d] = fecha.split('-');
-    const fechaDMY = `${d}/${m}/${y}`;
-    const nueva = { id:newId, fecha:fechaDMY, tarea, direccion:dir, cadete_id:cid, estado:'pendiente', notas };
-    try {
-      await postData({ hoja:'tareas', accion:'nueva_tarea', ...nueva });
-      appData.tareas.push(nueva);
-      document.getElementById('nf-tarea').value  = '';
-      document.getElementById('nf-dir').value    = '';
-      document.getElementById('nf-notas').value  = '';
-      msg.className = 'form-msg ok';
-      msg.textContent = `Tarea #${newId} agregada.`;
-      renderPanel(); aplicarFiltros();
-      showToast('Tarea agregada ✓');
-    } catch(e) {
-      msg.className = 'form-msg err';
-      msg.textContent = 'Error al guardar. Verificá la conexión.';
-    }
-    btn.disabled = false; btn.textContent = 'AGREGAR TAREA';
+    btn.disabled=false;
+    btn.textContent=editandoTareaId?'ACTUALIZAR TAREA':'AGREGAR TAREA';
   });
 }
 
-// ════════════════════════════
-// GESTIÓN DE CADETES
-// ════════════════════════════
-let editandoCadeteId = null; // null = modo crear, número = modo editar
-
-function setupCadetes() {
-  renderCadetesList();
-  resetCadeteForm();
-
-  document.getElementById('btn-guardar-cadete').addEventListener('click', guardarCadete);
-  document.getElementById('btn-cancelar-cadete').addEventListener('click', () => {
-    editandoCadeteId = null;
-    resetCadeteForm();
-  });
-  document.getElementById('cf-pin').addEventListener('input', e => {
-    e.target.value = e.target.value.replace(/\D/g,'');
-  });
+// ══════════════════════════════
+// GESTIÓN DE USUARIOS
+// ══════════════════════════════
+function setupUsuarios() {
+  renderUsuariosList();
+  resetUsuarioForm();
+  document.getElementById('btn-guardar-usuario').addEventListener('click', guardarUsuario);
+  document.getElementById('btn-cancelar-usuario').addEventListener('click', ()=>{ editandoUsuarioId=null; resetUsuarioForm(); });
+  document.getElementById('cf-pin').addEventListener('input', e=>{ e.target.value=e.target.value.replace(/\D/g,''); });
 }
 
-function renderCadetesList() {
-  const wrap = document.getElementById('cadetes-list-wrap');
-  if (!appData.cadetes.length) {
-    wrap.innerHTML = '<p style="color:var(--gris);font-size:13px;padding:.5rem 0">No hay cadetes registrados aún.</p>';
-    return;
-  }
-  wrap.innerHTML = appData.cadetes.map(c => {
-    const inactivo  = String(c.activo) === 'false' || String(c.activo) === '0';
-    const badge     = inactivo ? '<span class="cadete-card-badge">Inactivo</span>' : '';
-    const btnToggle = inactivo
-      ? `<button class="btn-cad-action" onclick="toggleActivoCadete(${c.id})">Activar</button>`
-      : `<button class="btn-cad-action" onclick="toggleActivoCadete(${c.id})">Desactivar</button>`;
-    return `
-      <div class="cadete-card ${inactivo ? 'inactivo' : ''}" id="cadete-card-${c.id}">
-        <div class="cadete-card-top">
-          <div class="cadete-card-avatar">${iniciales(c.nombre)}</div>
-          <div class="cadete-card-info">
-            <div class="cadete-card-name">${c.nombre}${badge}</div>
-            <div class="cadete-card-meta">PIN: ${c.pin}&nbsp;&nbsp;·&nbsp;&nbsp;ID: ${c.id}</div>
-          </div>
+function renderUsuariosList() {
+  const wrap=document.getElementById('usuarios-list-wrap');
+  const cadetes=getCadetes();
+  if (!cadetes.length) { wrap.innerHTML='<p style="color:var(--gris);font-size:13px;padding:.5rem 0">No hay cadetes registrados.</p>'; return; }
+  wrap.innerHTML=cadetes.map(c=>{
+    const inactivo=String(c.activo)==='false'||String(c.activo)==='0';
+    const badge=inactivo?'<span class="cadete-card-badge">Inactivo</span>':'';
+    const btnToggle=inactivo
+      ?`<button class="btn-cad-action" onclick="toggleActivoUsuario(${c.id})">Activar</button>`
+      :`<button class="btn-cad-action" onclick="toggleActivoUsuario(${c.id})">Desactivar</button>`;
+    return `<div class="cadete-card ${inactivo?'inactivo':''}" id="usuario-card-${c.id}">
+      <div class="cadete-card-top">
+        <div class="cadete-card-avatar">${iniciales(c.nombre)}</div>
+        <div class="cadete-card-info">
+          <div class="cadete-card-name">${c.nombre}${badge}</div>
+          <div class="cadete-card-meta">PIN: ${c.pin}&nbsp;·&nbsp;ID: ${c.id}</div>
         </div>
-        <div class="cadete-card-actions">
-          <button class="btn-cad-action" onclick="editarCadete(${c.id})">✎ Editar</button>
-          ${btnToggle}
-          <button class="btn-cad-action danger" onclick="eliminarCadete(${c.id}, '${c.nombre.replace(/'/g,"\\'")}')">✕ Eliminar</button>
-        </div>
-      </div>`;
+      </div>
+      <div class="cadete-card-actions">
+        <button class="btn-cad-action" onclick="editarUsuario(${c.id})">✎ Editar</button>
+        ${btnToggle}
+        <button class="btn-cad-action danger" onclick="eliminarUsuario(${c.id},'${c.nombre.replace(/'/g,"\\'")}')">✕ Eliminar</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function resetCadeteForm() {
-  editandoCadeteId = null;
-  document.getElementById('cf-nombre').value = '';
-  document.getElementById('cf-pin').value    = '';
-  document.getElementById('cadete-form-msg').textContent = '';
-  document.getElementById('cadete-form-msg').className   = 'form-msg';
-  document.getElementById('cadete-form-title').textContent = 'Nuevo cadete';
-  document.getElementById('btn-guardar-cadete').textContent = 'GUARDAR';
-  document.getElementById('btn-cancelar-cadete').style.display = 'none';
+function resetUsuarioForm() {
+  editandoUsuarioId=null;
+  document.getElementById('cf-nombre').value='';
+  document.getElementById('cf-pin').value='';
+  document.getElementById('usuario-form-msg').textContent='';
+  document.getElementById('usuario-form-msg').className='form-msg';
+  document.getElementById('usuario-form-title').textContent='Nuevo cadete';
+  document.getElementById('btn-guardar-usuario').textContent='GUARDAR';
+  document.getElementById('btn-cancelar-usuario').style.display='none';
 }
 
-function editarCadete(id) {
-  const c = appData.cadetes.find(c => String(c.id) === String(id));
+function editarUsuario(id) {
+  const c=appData.usuarios.find(u=>String(u.id)===String(id));
   if (!c) return;
-  editandoCadeteId = id;
-  document.getElementById('cf-nombre').value = c.nombre;
-  document.getElementById('cf-pin').value    = c.pin;
-  document.getElementById('cadete-form-title').textContent   = `Editando: ${c.nombre}`;
-  document.getElementById('btn-guardar-cadete').textContent  = 'ACTUALIZAR';
-  document.getElementById('btn-cancelar-cadete').style.display = 'inline-block';
-  document.getElementById('cadete-form-msg').textContent = '';
-  // Scroll al formulario
-  document.getElementById('cadete-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  editandoUsuarioId=id;
+  document.getElementById('cf-nombre').value=c.nombre;
+  document.getElementById('cf-pin').value=c.pin;
+  document.getElementById('usuario-form-title').textContent=`Editando: ${c.nombre}`;
+  document.getElementById('btn-guardar-usuario').textContent='ACTUALIZAR';
+  document.getElementById('btn-cancelar-usuario').style.display='inline-block';
+  document.getElementById('usuario-form-msg').textContent='';
+  document.getElementById('usuario-form-wrap').scrollIntoView({behavior:'smooth',block:'start'});
   document.getElementById('cf-nombre').focus();
 }
 
-async function guardarCadete() {
-  const nombre = document.getElementById('cf-nombre').value.trim();
-  const pin    = document.getElementById('cf-pin').value.trim();
-  const msg    = document.getElementById('cadete-form-msg');
+async function guardarUsuario() {
+  const nombre=document.getElementById('cf-nombre').value.trim();
+  const pin=document.getElementById('cf-pin').value.trim();
+  const msg=document.getElementById('usuario-form-msg');
+  if (!nombre) { msg.className='form-msg err'; msg.textContent='El nombre es obligatorio.'; return; }
+  if (pin.length!==4) { msg.className='form-msg err'; msg.textContent='El PIN debe tener 4 dígitos.'; return; }
+  const pinUsado=appData.usuarios.find(u=>String(u.pin)===pin&&String(u.id)!==String(editandoUsuarioId));
+  if (pinUsado) { msg.className='form-msg err'; msg.textContent=`El PIN ${pin} ya está en uso.`; return; }
 
-  if (!nombre) { msg.className = 'form-msg err'; msg.textContent = 'El nombre es obligatorio.'; return; }
-  if (pin.length !== 4) { msg.className = 'form-msg err'; msg.textContent = 'El PIN debe tener exactamente 4 dígitos.'; return; }
+  const btn=document.getElementById('btn-guardar-usuario');
+  btn.disabled=true; btn.textContent='...';
 
-  // Verificar PIN duplicado (distinto al que se está editando)
-  const pinUsado = appData.cadetes.find(c =>
-    String(c.pin) === pin && String(c.id) !== String(editandoCadeteId)
-  );
-  if (pinUsado) { msg.className = 'form-msg err'; msg.textContent = `El PIN ${pin} ya está en uso por ${pinUsado.nombre}.`; return; }
-
-  const btn = document.getElementById('btn-guardar-cadete');
-  btn.disabled = true; btn.textContent = '...';
-
-  if (editandoCadeteId) {
-    // ── EDITAR ──
+  if (editandoUsuarioId) {
     try {
-      const res = await postData({ hoja:'cadetes', accion:'editar_cadete', id: editandoCadeteId, nombre, pin });
-      if (!res || !res.ok) throw new Error('respuesta inválida');
-      const idx = appData.cadetes.findIndex(c => String(c.id) === String(editandoCadeteId));
-      if (idx !== -1) { appData.cadetes[idx].nombre = nombre; appData.cadetes[idx].pin = pin; }
+      const res=await postData({hoja:'usuarios',accion:'editar_usuario',id:editandoUsuarioId,nombre,pin});
+      if (!res||!res.ok) throw new Error();
+      const idx=appData.usuarios.findIndex(u=>String(u.id)===String(editandoUsuarioId));
+      if (idx!==-1) { appData.usuarios[idx].nombre=nombre; appData.usuarios[idx].pin=pin; }
       showToast(`${nombre} actualizado ✓`);
-      renderCadetesList();
-      poblarFiltrosYSelects();
-      renderPanel();
-      resetCadeteForm();
-    } catch(e) {
-      msg.className = 'form-msg err'; msg.textContent = 'Error al guardar. Verificá la conexión o el Apps Script.';
-    }
+      renderUsuariosList(); poblarFiltrosYSelects(); renderPanel(); resetUsuarioForm();
+    } catch(e) { msg.className='form-msg err'; msg.textContent='Error al guardar.'; }
   } else {
-    // ── CREAR ──
-    const ids  = appData.cadetes.map(c => parseInt(c.id)||0);
-    const newId = ids.length ? Math.max(...ids)+1 : 1;
-    const nuevo = { id: newId, nombre, pin, activo: 'true' };
+    const ids=appData.usuarios.map(u=>parseInt(u.id)||0);
+    const newId=ids.length?Math.max(...ids)+1:1;
+    const nuevo={id:newId,nombre,pin,activo:'true',rol:'cadete',inicial:''};
     try {
-      const res = await postData({ hoja:'cadetes', accion:'nuevo_cadete', ...nuevo });
-      if (!res || !res.ok) throw new Error('respuesta inválida');
-      appData.cadetes.push(nuevo);
+      const res=await postData({hoja:'usuarios',accion:'nuevo_usuario',...nuevo});
+      if (!res||!res.ok) throw new Error();
+      appData.usuarios.push(nuevo);
       showToast(`${nombre} creado ✓`);
-      renderCadetesList();
-      poblarFiltrosYSelects();
-      renderPanel();
-      resetCadeteForm();
-    } catch(e) {
-      msg.className = 'form-msg err'; msg.textContent = 'Error al guardar. Verificá la conexión o el Apps Script.';
-    }
+      renderUsuariosList(); poblarFiltrosYSelects(); renderPanel(); resetUsuarioForm();
+    } catch(e) { msg.className='form-msg err'; msg.textContent='Error al guardar.'; }
   }
-  btn.disabled = false;
-  btn.textContent = editandoCadeteId ? 'ACTUALIZAR' : 'GUARDAR';
+  btn.disabled=false;
+  btn.textContent=editandoUsuarioId?'ACTUALIZAR':'GUARDAR';
 }
 
-async function toggleActivoCadete(id) {
-  const c = appData.cadetes.find(c => String(c.id) === String(id));
+async function toggleActivoUsuario(id) {
+  const c=appData.usuarios.find(u=>String(u.id)===String(id));
   if (!c) return;
-  const inactivo   = String(c.activo) === 'false' || String(c.activo) === '0';
-  const nuevoEstado = inactivo ? true : false;
-  const accionTxt  = nuevoEstado ? 'activar' : 'desactivar';
-  const ok = await showModal(
-    nuevoEstado ? 'Activar cadete' : 'Desactivar cadete',
-    `¿Querés <b>${accionTxt}</b> a este cadete? ${nuevoEstado ? 'Volverá a poder ingresar con su PIN.' : 'No podrá ingresar al sistema hasta que lo actives de nuevo.'}<div class="modal-task">${c.nombre}</div>`
+  const inactivo=String(c.activo)==='false'||String(c.activo)==='0';
+  const nuevoEstado=inactivo?true:false;
+  const ok=await showModal(
+    nuevoEstado?'Activar cadete':'Desactivar cadete',
+    `¿Querés <b>${nuevoEstado?'activar':'desactivar'}</b> a este cadete?<div class="modal-task">${c.nombre}</div>`
   );
   if (!ok) return;
   try {
-    await postData({ hoja:'cadetes', accion:'editar_cadete', id, nombre: c.nombre, pin: c.pin, activo: nuevoEstado });
-    c.activo = nuevoEstado;
-    renderCadetesList();
-    showToast(nuevoEstado ? `${c.nombre} activado ✓` : `${c.nombre} desactivado`);
-  } catch(e) {
-    showToast('Error al guardar. Verificá la conexión.', 3000);
-  }
+    await postData({hoja:'usuarios',accion:'editar_usuario',id,nombre:c.nombre,pin:c.pin,activo:nuevoEstado});
+    c.activo=nuevoEstado;
+    renderUsuariosList();
+    showToast(nuevoEstado?`${c.nombre} activado ✓`:`${c.nombre} desactivado`);
+  } catch(e) { showToast('Error al guardar.',3000); }
 }
 
-async function eliminarCadete(id, nombre) {
-  const ok = await showModal(
-    'Eliminar cadete',
-    `¿Estás seguro? Esta acción no se puede deshacer. Se eliminará el cadete y no podrá ingresar más al sistema. Sus tareas asignadas no se borran.<div class="modal-task">${nombre}</div>`
-  );
+async function eliminarUsuario(id, nombre) {
+  const ok=await showModal('Eliminar cadete',
+    `¿Estás seguro? Esta acción no se puede deshacer. Sus tareas no se borran.<div class="modal-task">${nombre}</div>`);
   if (!ok) return;
   try {
-    await postData({ hoja:'cadetes', accion:'eliminar_cadete', id });
-    appData.cadetes = appData.cadetes.filter(c => String(c.id) !== String(id));
-    renderCadetesList();
-    poblarFiltrosYSelects();
-    renderPanel();
+    await postData({hoja:'usuarios',accion:'eliminar_usuario',id});
+    appData.usuarios=appData.usuarios.filter(u=>String(u.id)!==String(id));
+    renderUsuariosList(); poblarFiltrosYSelects(); renderPanel();
     showToast(`${nombre} eliminado`);
-    if (String(editandoCadeteId) === String(id)) resetCadeteForm();
-  } catch(e) {
-    showToast('Error al eliminar. Verificá la conexión.', 3000);
-  }
+    if (String(editandoUsuarioId)===String(id)) resetUsuarioForm();
+  } catch(e) { showToast('Error al eliminar.',3000); }
 }
 
 // ── TABS ──
-document.querySelectorAll('.admin-tab').forEach(tab =>
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.admin-tab').forEach(tab=>
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
     tab.classList.add('active');
-    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab!=='nueva') resetTareaForm();
   })
 );
 
 // ── INIT ──
 async function init() {
-  try {
-    await loadAllData();
-  } catch(e) {
-    appData = { tareas: DEMO.tareas, cadetes: DEMO.cadetes, config: DEMO.config };
-  }
+  try { await loadAllData(); } catch(e) { appData={tareas:[],usuarios:[]}; }
   document.getElementById('page-loader').classList.add('hidden');
   showScreen('screen-login');
-  setTimeout(() => pinField.focus(), 100);
+  setTimeout(()=>pinField.focus(),100);
 }
 
 init();
